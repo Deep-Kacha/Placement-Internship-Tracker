@@ -1,0 +1,155 @@
+@model PlacementTracker.ViewModels.DashboardViewModel
+@{ ViewData["Title"] = "Dashboard"; }
+
+<h4 class="fw-bold mb-4"><i class="bi bi-speedometer2 me-2"></i>Student Dashboard</h4>
+
+<!-- Placement KPIs -->
+<p class="text-uppercase text-muted small fw-semibold mb-1" style="letter-spacing:1px;">
+    <i class="bi bi-briefcase me-1"></i> Placement Overview
+</p>
+<div class="row g-3 mb-4">
+@foreach (var (label, val, color, icon) in new[] {
+    ("Total Applications", (object)Model.TotalApplications, "primary",   "briefcase"),
+    ("Applied",            (object)Model.Applied,           "secondary", "send"),
+    ("Interview",          (object)Model.Interview,         "info",      "camera-video"),
+    ("Offers",             (object)Model.Offer,             "success",   "trophy"),
+    ("Rejected",           (object)Model.Rejected,          "danger",    "x-circle"),
+}) {
+<div class="col-6 col-md">
+    <div class="card border-0 shadow-sm text-center p-3">
+        <i class="bi bi-@icon fs-3 text-@color"></i>
+        <div class="fs-2 fw-bold text-@color">@val</div>
+        <small class="text-muted">@label</small>
+    </div>
+</div>
+}
+</div>
+
+<!-- Internship KPIs -->
+<p class="text-uppercase text-muted small fw-semibold mb-1" style="letter-spacing:1px;">
+    <i class="bi bi-building me-1"></i> Internship Overview
+</p>
+<div class="row g-3 mb-4">
+@foreach (var (label, val, color, icon) in new[] {
+    ("Total Internships",  (object)Model.TotalInternships,       "info",    "building"),
+    ("Selected",           (object)Model.InternshipSelected,     "success", "check-circle"),
+    ("Completed",          (object)Model.InternshipCompleted,    "teal",    "patch-check"),
+    ("Rejected",           (object)Model.InternshipRejected,     "danger",  "x-circle"),
+    ("PPO Converted",      (object)Model.PPOConverted,           "warning", "star-fill"),
+}) {
+<div class="col-6 col-md">
+    <div class="card border-0 shadow-sm text-center p-3">
+        <i class="bi bi-@icon fs-3 text-@color"></i>
+        <div class="fs-2 fw-bold text-@color">@val</div>
+        <small class="text-muted">@label</small>
+    </div>
+</div>
+}
+</div>
+
+@if (Model.HasOngoingInternship)
+{
+<div class="alert alert-success shadow-sm fw-semibold">
+    <i class="bi bi-clock-history me-1"></i> You have an ongoing internship!
+</div>
+}
+
+<!-- Recent Activity Row -->
+<div class="row g-4 mb-4">
+<div class="col-md-6">
+    <div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <h6 class="fw-semibold mb-3"><i class="bi bi-briefcase text-primary me-2"></i>Recent Placements</h6>
+        @if (!Model.RecentApplications.Any()){ <p class="text-muted small">No applications yet.</p> }
+        else {
+        <ul class="list-group list-group-flush">
+        @foreach (var a in Model.RecentApplications)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="fw-semibold">@a.CompanyName</span>
+                    <small class="text-muted d-block">@a.Role</small>
+                </div>
+                <span class="badge badge-@a.Status">@a.Status</span>
+            </li>
+        }
+        </ul>
+        }
+    </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <h6 class="fw-semibold mb-3"><i class="bi bi-building text-info me-2"></i>Recent Internships</h6>
+        @if (!Model.RecentInternships.Any()){ <p class="text-muted small">No internship applications yet.</p> }
+        else {
+        <ul class="list-group list-group-flush">
+        @foreach (var a in Model.RecentInternships)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="fw-semibold">@a.CompanyName</span>
+                    <small class="text-muted d-block">@a.Role · @a.InternshipType</small>
+                </div>
+                <div>
+                    <span class="badge badge-@a.Status">@a.Status</span>
+                    @if (a.IsPPOConverted) { <span class="badge badge-ppo ms-1"><i class="bi bi-star-fill"></i></span> }
+                </div>
+            </li>
+        }
+        </ul>
+        }
+    </div>
+    </div>
+</div>
+</div>
+
+<!-- Upcoming Interviews -->
+<div class="row g-4">
+<div class="col-md-6">
+    <div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <h6 class="fw-semibold mb-3"><i class="bi bi-calendar-event text-warning me-2"></i>Upcoming Placement Interviews</h6>
+        @if (!Model.UpcomingInterviews.Any()){ <p class="text-muted small">No upcoming interviews.</p> }
+        else {
+        @foreach (var iv in Model.UpcomingInterviews) {
+        <div class="d-flex justify-content-between align-items-center mb-2 p-2 bg-light rounded">
+            <div>
+                <span class="badge bg-secondary">@iv.InterviewType</span>
+                <strong class="ms-1">@iv.InterviewDate.ToString("dd MMM yyyy")</strong>
+                @if (iv.InterviewTime.HasValue) {
+                <small class="text-muted ms-1">@DateTime.Today.Add(iv.InterviewTime.Value).ToString("hh:mm tt")</small>
+                }
+            </div>
+            @if (!string.IsNullOrEmpty(iv.MeetingLink)) {
+            <a href="@iv.MeetingLink" target="_blank" class="btn btn-sm btn-outline-primary">Join</a>
+            }
+        </div>
+        }
+        }
+    </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <h6 class="fw-semibold mb-3"><i class="bi bi-calendar-event text-info me-2"></i>Upcoming Internship Interviews</h6>
+        @if (!Model.UpcomingInternshipInterviews.Any()){ <p class="text-muted small">No upcoming interviews.</p> }
+        else {
+        @foreach (var iv in Model.UpcomingInternshipInterviews) {
+        <div class="d-flex justify-content-between align-items-center mb-2 p-2 bg-light rounded">
+            <div>
+                <span class="badge bg-info">@iv.RoundType</span>
+                <strong class="ms-1">@iv.InterviewDate.ToString("dd MMM yyyy")</strong>
+            </div>
+            @if (!string.IsNullOrEmpty(iv.MeetingLink)) {
+            <a href="@iv.MeetingLink" target="_blank" class="btn btn-sm btn-outline-info">Join</a>
+            }
+        </div>
+        }
+        }
+    </div>
+    </div>
+</div>
+</div>

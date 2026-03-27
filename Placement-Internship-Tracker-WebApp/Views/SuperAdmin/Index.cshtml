@@ -1,0 +1,35 @@
+@using PlacementTracker.Models
+@{ ViewData["Title"] = "Super Admin Panel";
+    var allUsers = ViewBag.AllUsers as List<ApplicationUser> ?? new();
+}
+<h4 class="fw-bold mb-4"><i class="bi bi-shield-lock me-2"></i>Super Admin Panel</h4>
+
+<div class="row g-3 mb-4">
+@foreach (var (label,val,color,icon) in new[]{
+    ("Total Users",(object)(ViewBag.TotalUsers ?? 0),"primary","people"),
+    ("Placements",(object)(ViewBag.TotalPlacements ?? 0),"info","briefcase"),
+    ("Internships",(object)(ViewBag.TotalInternships ?? 0),"warning","building"),
+    ("Offers",(object)(ViewBag.TotalOffers ?? 0),"success","trophy"),
+    ("PPO",(object)(ViewBag.TotalPPO ?? 0),"danger","star-fill"),
+    ("Companies",(object)(ViewBag.TotalCompanies ?? 0),"secondary","buildings"),
+}){
+<div class="col-6 col-md-2"><div class="card border-0 shadow-sm text-center p-3">
+    <i class="bi bi-@icon fs-3 text-@color"></i>
+    <div class="fs-2 fw-bold text-@color">@val</div>
+    <small class="text-muted">@label</small>
+</div></div>
+}
+</div>
+
+<div class="card border-0 shadow-sm"><div class="card-body">
+<h6 class="fw-semibold mb-3">All Users (@allUsers.Count)</h6>
+<div class="table-responsive"><table class="table table-sm table-hover mb-0">
+    <thead class="table-light"><tr><th>Name</th><th>Email</th><th>Department</th><th>Active</th><th>Created</th></tr></thead>
+    <tbody>@foreach (var u in allUsers){
+    <tr class="@(!u.IsActive?"table-danger":"")">
+        <td class="fw-semibold">@u.FullName</td><td class="small">@u.Email</td>
+        <td class="small">@u.Department</td>
+        <td>@if(u.IsActive){<span class="badge bg-success">Yes</span>}else{<span class="badge bg-danger">No</span>}</td>
+        <td class="small text-muted">@u.CreatedAt.ToString("dd MMM yyyy")</td></tr>
+    }</tbody>
+</table></div></div></div>

@@ -1,0 +1,65 @@
+@model PlacementTracker.ViewModels.JobDescriptionViewModel
+@{ ViewData["Title"] = "Post New Job"; }
+
+<h4 class="fw-bold mb-4">Post New Job or Internship</h4>
+
+<div class="card shadow-sm border-0" style="max-width:800px">
+    <div class="card-body p-4 p-md-5">
+        <form asp-action="CreateJD" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3 small"></div>
+            
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <label asp-for="CompanyName" class="form-label fw-semibold"></label>
+                    <input asp-for="CompanyName" class="form-control" placeholder="Company Name" />
+                    <span asp-validation-for="CompanyName" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Title" class="form-label fw-semibold">Role / Job Title</label>
+                    <input asp-for="Title" class="form-control" placeholder="e.g. Software Engineer Intern" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="JobType" class="form-label fw-semibold"></label>
+                    <select asp-for="JobType" class="form-select">
+                        <option value="Placement">Placement (Full-Time)</option>
+                        <option value="Internship">Internship</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Deadline" class="form-label fw-semibold">Application Deadline</label>
+                    <input asp-for="Deadline" type="date" class="form-control" />
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Description" class="form-label fw-semibold">Description</label>
+                <textarea asp-for="Description" class="form-control" rows="4" placeholder="Describe the role and responsibilities..."></textarea>
+                <span asp-validation-for="Description" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Requirements" class="form-label fw-semibold">Requirements (Optional)</label>
+                <textarea asp-for="Requirements" class="form-control" rows="3" placeholder="Skill expectations..."></textarea>
+            </div>
+            
+            <div class="row g-4 mb-5">
+                <div class="col-md-6">
+                    <label asp-for="Location" class="form-label fw-semibold">Location</label>
+                    <input asp-for="Location" class="form-control" placeholder="e.g. Bangalore or Remote" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="PackageOrStipend" class="form-label fw-semibold"></label>
+                    <input asp-for="PackageOrStipend" class="form-control" placeholder="e.g. 10 LPA or 20k/month" />
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary px-4 fw-semibold shadow-sm">
+                    <i class="bi bi-send me-2"></i> Submit for Approval
+                </button>
+                <a asp-action="Index" class="btn btn-light border px-4">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

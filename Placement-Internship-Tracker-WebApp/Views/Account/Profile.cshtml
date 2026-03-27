@@ -1,0 +1,90 @@
+@model PlacementTracker.ViewModels.ProfileViewModel
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container-fluid px-0">
+    <div class="row">
+        <!-- Profile Card -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body text-center p-5">
+                    <div class="position-relative d-inline-block mb-4">
+                        <div class="rounded-circle bg-brand-100 flex items-center justify-center text-brand-700 font-bold" style="width: 120px; height: 120px; font-size: 3rem;">
+                            @Model.FullName.Substring(0, 1).ToUpper()
+                        </div>
+                        <button class="btn btn-sm btn-white border shadow-sm position-absolute bottom-0 end-0 rounded-circle p-2">
+                            <i class="bi bi-camera-fill"></i>
+                        </button>
+                    </div>
+                    <h3 class="fw-bold mb-1">@Model.FullName</h3>
+                    <p class="text-muted small mb-4">@ViewContext.HttpContext.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Role)?.Value</p>
+                    
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary">Edit Profile Picture</button>
+                        <button class="btn btn-light border">View Public Profile</button>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-top-0 p-4">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted small">Account Status</span>
+                        <span class="badge bg-success">Active</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted small">Member Since</span>
+                        <span class="text-dark small fw-semibold">@DateTime.Now.ToString("MMM yyyy")</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Form -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white p-4">
+                    <h5 class="mb-0 fw-bold">Personal Information</h5>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Profile" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3 small"></div>
+                        
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label asp-for="FullName" class="form-label"></label>
+                                <input asp-for="FullName" class="form-control" placeholder="Enter your full name" />
+                                <span asp-validation-for="FullName" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Email" class="form-label"></label>
+                                <input asp-for="Email" class="form-control bg-light" readonly />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Phone" class="form-label"></label>
+                                <input asp-for="Phone" class="form-control" placeholder="+91 98765 43210" />
+                                <span asp-validation-for="Phone" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Department" class="form-label"></label>
+                                <input asp-for="Department" class="form-control" placeholder="Computer Science" />
+                                <span asp-validation-for="Department" class="text-danger small"></span>
+                            </div>
+                            @if (ViewContext.HttpContext.User.IsInRole("Student"))
+                            {
+                                <div class="col-md-12">
+                                    <label asp-for="CollegeRollNo" class="form-label"></label>
+                                    <input asp-for="CollegeRollNo" class="form-control" placeholder="e.g. CS2021001" />
+                                    <span asp-validation-for="CollegeRollNo" class="text-danger small"></span>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="mt-5 pt-3 border-top d-flex justify-content-end gap-2">
+                            <button type="reset" class="btn btn-light border">Discard Changes</button>
+                            <button type="submit" class="btn btn-primary px-4 shadow-sm">Save Profile</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

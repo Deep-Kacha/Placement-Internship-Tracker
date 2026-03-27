@@ -1,49 +1,386 @@
-﻿<!DOCTYPE html>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject PlacementTracker.Services.NotificationService NotificationService
+@{
+    var user = SignInManager.IsSignedIn(User) ? await UserManager.GetUserAsync(User) : null;
+    var roles = user != null ? await UserManager.GetRolesAsync(user) : new List<string>();
+    var role = roles.FirstOrDefault() ?? "Guest";
+    var unreadNotifications = user != null ? (await NotificationService.GetNotificationsAsync(user.Id)).Count(n => !n.IsRead) : 0;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Placement_Internship_Tracker_WebApp</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Placement_Internship_Tracker_WebApp.styles.css" asp-append-version="true" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>@ViewData["Title"] — Trackeoo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <!-- ... (rest of head unchanged) ... -->
+    <style>
+        :root {
+            --primary: #B91C1C;
+            --primary-dark: #7F1D1D;
+            --primary-light: #EF4444;
+            --secondary: #FFF7ED;
+            --bg-color: #FFFBF5;
+            --white: #FFFFFF;
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+            --border-color: #E5E7EB;
+            
+            --sidebar-w: 260px;
+            --sidebar-bg: var(--white);
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+
+            /* Override Bootstrap Variables Globally */
+            --bs-primary: #B91C1C;
+            --bs-primary-rgb: 185, 28, 28;
+            --bs-body-font-family: 'Inter', sans-serif;
+            --bs-body-bg: #FFFBF5;
+            --bs-body-color: #1F2937;
+            --bs-border-color: #E5E7EB;
+        }
+
+        * { font-family: 'Inter', sans-serif; }
+        body { background: var(--bg-color); color: var(--text-dark); overflow-x: hidden; }
+
+        /* Typography Consistency */
+        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+            color: var(--text-dark);
+            font-weight: 700 !important;
+            letter-spacing: -0.025em;
+        }
+        
+        /* Button Consistency */
+        .btn {
+            font-weight: 600 !important;
+            border-radius: var(--radius-sm) !important;
+            padding: 0.5rem 1.25rem ;
+            transition: all 0.2s ease-in-out !important;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .btn-primary {
+            background-color: var(--primary) !important;
+            border-color: var(--primary) !important;
+            color: white !important;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-dark) !important;
+            border-color: var(--primary-dark) !important;
+            transform: translateY(-1px);
+        }
+        .btn-sm { padding: 0.25rem 0.75rem !important; font-size: 0.875rem !important; }
+        .btn-lg { padding: 0.75rem 1.5rem !important; font-size: 1.125rem !important; }
+
+        /* Card Consistency */
+        .card { 
+            border-radius: var(--radius-md) !important; 
+            border: 1px solid var(--border-color) !important; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important; 
+            background-color: var(--white) !important;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        .card-body { padding: 1.5rem !important; }
+        .card-header { 
+            background-color: var(--white) !important; 
+            border-bottom: 1px solid var(--border-color) !important;
+            padding: 1.25rem 1.5rem !important;
+            font-weight: 700;
+        }
+
+        /* Table Consistency */
+        .table { margin-bottom: 0 !important; color: var(--text-dark) !important; font-size: 0.9rem; }
+        .table > :not(caption) > * > * {
+            padding: 1rem 1.25rem !important;
+            border-bottom-color: var(--border-color) !important;
+            vertical-align: middle;
+        }
+        .table-light {
+            --bs-table-bg: #F9FAFB !important;
+            --bs-table-color: var(--text-light) !important;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        /* Input Consistency */
+        .form-control, .form-select {
+            border-radius: var(--radius-sm) !important;
+            border: 1px solid #D1D5DB !important;
+            padding: 0.6rem 1rem !important;
+            font-size: 0.95rem !important;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            transition: all 0.2s !important;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 4px rgba(185, 28, 28, 0.1) !important;
+        }
+        .form-label { font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.4rem; }
+
+        /* Badge Overrides */
+        .badge {
+            padding: 0.4em 0.65em !important;
+            font-weight: 600 !important;
+            border-radius: 6px !important;
+            font-size: 0.75em !important;
+            letter-spacing: 0.02em;
+        }
+        
+        /* Status Badges */
+        .badge-Applied    { background-color: var(--text-light); color: var(--white); }
+        .badge-Screening  { background-color: #0dcaf0; color: #000; }
+        .badge-Interview  { background-color: var(--primary-light); color: var(--white); }
+        .badge-Offer      { background-color: #10B981; color: var(--white); }
+        .badge-Rejected   { background-color: var(--primary-dark); color: var(--white); }
+        .badge-Withdrawn  { background-color: #F59E0B; color: var(--white); }
+        .badge-Shortlisted{ background-color: #6366F1; color: var(--white); }
+        .badge-Test       { background-color: #F97316; color: var(--white); }
+        .badge-Selected   { background-color: #10B981; color: var(--white); }
+        .badge-Completed  { background-color: #059669; color: var(--white); }
+        .badge-ppo        { background: linear-gradient(135deg,#F59E0B,#F97316); color: var(--white); }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: var(--sidebar-w); min-height: 100vh; position: fixed;
+            background: var(--sidebar-bg); padding: 0; z-index: 1000;
+            border-right: 1px solid var(--border-color);
+            transition: all .3s; display: flex; flex-direction: column;
+        }
+        .sidebar-brand { padding: 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .sidebar-brand h5 { color: var(--primary); margin: 0; font-weight: 800; font-size: 1.25rem; letter-spacing: 0.5px; }
+        .sidebar-brand small { color: var(--text-light); font-size: .75rem; letter-spacing: 1px; font-weight: 700;}
+        .sidebar-content { flex: 1; overflow-y: auto; padding-bottom: 1rem; }
+        .nav-section {
+            padding: 1.25rem 1.5rem .5rem; 
+            color: var(--text-light); font-size: .75rem;
+            font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+        }
+        .nav-link {
+            color: var(--text-dark); padding: .75rem 1.5rem;
+            font-size: .95rem; font-weight: 600;
+            border-radius: 0; transition: all .2s;
+            display: flex; align-items: center; gap: .75rem;
+            border-left: 4px solid transparent; text-decoration: none;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary); background: var(--secondary);
+            border-left-color: var(--primary); font-weight: 700;
+        }
+        .nav-link i { font-size: 1.2rem; width: 24px; text-align: center; color: var(--text-light); transition: all .2s; }
+        .nav-link:hover i, .nav-link.active i { color: var(--primary); }
+        .sidebar-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border-color); background: var(--bg-color); }
+        .user-dropdown-btn {
+            display: flex; align-items: center; gap: .75rem; width: 100%; padding: .5rem; border: none; background: transparent;
+            text-align: left; border-radius: var(--radius-sm); transition: background .2s;
+        }
+        .user-dropdown-btn:hover { background: #f3f4f6; }
+        .user-avatar-sm {
+            width: 36px; height: 36px; border-radius: 50%; background: var(--primary-light); color: var(--white);
+            font-weight: 700; display: flex; align-items: center; justify-content: center;
+        }
+        
+        .main-content { margin-left: var(--sidebar-w); min-height: 100vh; transition: all .3s; display: flex; flex-direction: column; }
+        .topbar {
+            background: var(--white); border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 999;
+        }
+        .content-body { padding: 2rem; max-width: 1200px; margin: 0 auto; flex: 1; width: 100%; }
+        
+        .toast-container { position: fixed; top: 1.5rem; justify-content: center; width: 100%; display: flex; z-index: 1100; pointer-events: none;}
+        .toast { pointer-events: auto; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border-radius: var(--radius-sm); }
+
+        @@media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.show { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+        }
+    </style>
+    @RenderSection("Styles", required: false)
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Placement_Internship_Tracker_WebApp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+@if (SignInManager.IsSignedIn(User))
+{
+<nav class="sidebar" id="sidebar" role="navigation" aria-label="Main Navigation">
+    <div class="sidebar-brand">
+        <h5><i class="bi bi-mortarboard-fill me-2"></i>Trackeoo</h5>
+        <small>PLACEMENT & INTERNSHIP</small>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Placement_Internship_Tracker_WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <div class="sidebar-content">
+        @if (role == "Student")
+        {
+            <div class="nav-section">Overview</div>
+            <a asp-controller="Dashboard" asp-action="Index"
+               class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString()=="Dashboard"?"active":"")" aria-label="View Dashboard">
+                <i class="bi bi-grid-1x2"></i> Dashboard
+            </a>
+            <div class="nav-section">Job Board</div>
+            <a asp-controller="JobBoard" asp-action="Index" 
+               class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString()=="JobBoard"?"active":"")" aria-label="Available Jobs">
+                <i class="bi bi-search"></i> Find Jobs
+            </a>
+            <div class="nav-section">My Tracker</div>
+            <a asp-controller="Applications" asp-action="Index"
+               class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString()=="Applications"&&ViewContext.RouteData.Values["action"]?.ToString()=="Index"?"active":"")" aria-label="View Job Applications">
+                <i class="bi bi-briefcase"></i> Job Applications
+            </a>
+            <a asp-controller="Internships" asp-action="Index"
+               class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString()=="Internships"&&ViewContext.RouteData.Values["action"]?.ToString()=="Index"?"active":"")" aria-label="View Internships">
+                <i class="bi bi-building"></i> My Internships
+            </a>
+        }
+        else if (role == "Faculty")
+        {
+            <div class="nav-section">Faculty Portal</div>
+            <a asp-controller="Faculty" asp-action="Index"
+               class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString()=="Faculty"?"active":"")" aria-label="View Students">
+                <i class="bi bi-people"></i> My Students
+            </a>
+        }
+        else if (role == "Recruiter")
+        {
+            <div class="nav-section">Recruitment</div>
+            <a asp-controller="Recruiter" asp-action="Index"
+               class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString()=="Recruiter"&&ViewContext.RouteData.Values["action"]?.ToString()=="Index"?"active":"")" aria-label="My Job Postings">
+                <i class="bi bi-briefcase-fill"></i> Job Postings
+            </a>
+            <a asp-controller="Recruiter" asp-action="CreateJD"
+               class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString()=="Recruiter"&&ViewContext.RouteData.Values["action"]?.ToString()=="CreateJD"?"active":"")" aria-label="Post a Job">
+                <i class="bi bi-plus-circle-fill"></i> Post New Job
+            </a>
+        }
+        else if (role == "Admin")
+        {
+            <div class="nav-section">Overview</div>
+            <a asp-controller="Admin" asp-action="Index"
+               class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString()=="Index"?"active":"")" aria-label="View Analytics">
+                <i class="bi bi-graph-up"></i> Analytics
+            </a>
+            <div class="nav-section">Management</div>
+            <a asp-controller="Admin" asp-action="Users" 
+               class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString()=="Users"?"active":"")" aria-label="Manage Users">
+                <i class="bi bi-person-lines-fill"></i> Users
+            </a>
+            <a asp-controller="Admin" asp-action="JobDescriptions"
+               class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString()=="JobDescriptions"?"active":"")" aria-label="Job Postings">
+                <i class="bi bi-briefcase-fill"></i> Job Postings
+            </a>
+            <a asp-controller="Admin" asp-action="Applications" 
+               class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString()=="Applications"?"active":"")" aria-label="All Job Applications">
+                <i class="bi bi-briefcase"></i> Placements
+            </a>
+            <a asp-controller="Admin" asp-action="Internships" 
+               class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString()=="Internships"?"active":"")" aria-label="All Internships">
+                <i class="bi bi-building"></i> Internships
+            </a>
+            <a asp-controller="Admin" asp-action="Companies" 
+               class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString()=="Companies"?"active":"")" aria-label="Manage Companies">
+                <i class="bi bi-buildings"></i> Companies
+            </a>
+        }
+        else if (role == "SuperAdmin")
+        {
+            <div class="nav-section">System</div>
+            <a asp-controller="SuperAdmin" asp-action="Index"
+               class="nav-link active" aria-label="System Panel">
+                <i class="bi bi-shield-lock"></i> Super Panel
+            </a>
+            <a asp-controller="Admin" asp-action="Index" class="nav-link" aria-label="Admin Analytics">
+                <i class="bi bi-graph-up"></i> Analytics
+            </a>
+            <a asp-controller="Admin" asp-action="Users" class="nav-link" aria-label="Manage Users">
+                <i class="bi bi-person-lines-fill"></i> Users
+            </a>
+        }
+    </div>
+    
+    <div class="sidebar-footer">
+        <div class="dropdown w-100">
+            <button class="user-dropdown-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="user-avatar-sm">@user?.FullName?.Substring(0, 1).ToUpper()</div>
+                <div class="d-flex flex-column" style="overflow:hidden">
+                    <span class="text-dark fw-semibold text-truncate" style="font-size:.9rem">@user?.FullName</span>
+                    <span class="text-muted text-truncate" style="font-size:.75rem">@role</span>
+                </div>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-up w-100 shadow-sm border-0 mt-2">
+                <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile"><i class="bi bi-person me-2"></i>My Profile</a></li>
+                <li><a class="dropdown-item" asp-controller="Account" asp-action="Notifications"><i class="bi bi-bell me-2"></i>Notifications</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <form asp-controller="Account" asp-action="Logout" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="dropdown-item text-danger"><i class="bi bi-box-arrow-right me-2"></i>Log out</button>
+                    </form>
+                </li>
+            </ul>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    </div>
+</nav>
+}
+
+<div class="main-content">
+    @if (SignInManager.IsSignedIn(User))
+    {
+    <header class="topbar">
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-light d-md-none border-0" onclick="document.getElementById('sidebar').classList.toggle('show')" aria-label="Toggle Sidebar">
+                <i class="bi bi-list fs-4"></i>
+            </button>
+            <h5 class="m-0 fw-bold d-none d-sm-block text-gray-800">
+                @if(ViewData["Title"] != null) { @ViewData["Title"] } else { @Html.Raw("Dashboard") }
+            </h5>
+        </div>
+        
+        <div class="d-flex align-items-center gap-3">
+            <a asp-controller="Account" asp-action="Notifications" class="btn btn-light position-relative rounded-circle p-2" aria-label="Notifications">
+                <i class="bi bi-bell fs-5 text-secondary"></i>
+                @if (unreadNotifications > 0)
+                {
+                    <span class="position-absolute top-25 start-75 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem; padding: 0.35em 0.5em;">
+                        @unreadNotifications
+                    </span>
+                }
+            </a>
+        </div>
+    </header>
+    }
+
+    <main class="content-body" role="main">
+        @if (TempData["Success"] != null)
+        {
+        <div class="toast-container">
+            <div class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body"><i class="bi bi-check-circle-fill me-2"></i>@TempData["Success"]</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        }
+        @RenderBody()
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+    // Auto-dismiss toast
+    setTimeout(() => {
+        document.querySelectorAll('.toast.show').forEach(t =>
+            bootstrap.Toast.getOrCreateInstance(t).hide());
+    }, 4000);
+</script>
+@RenderSection("Scripts", required: false)
 </body>
 </html>

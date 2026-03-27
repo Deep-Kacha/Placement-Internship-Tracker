@@ -1,0 +1,98 @@
+@model PlacementTracker.Models.JobDescription
+@{ ViewData["Title"] = "JD Details"; }
+
+<div class="mb-4">
+    <a asp-action="JobDescriptions" class="text-decoration-none text-muted small"><i class="bi bi-arrow-left me-1"></i>Back to JDs</a>
+</div>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+                <h4 class="fw-bold mb-1">@Model.Title</h4>
+                <div class="text-muted"><i class="bi bi-building me-2"></i>@Model.CompanyName</div>
+            </div>
+            <span class="badge bg-@(Model.Status == "Approved" ? "success" : Model.Status == "Rejected" ? "danger" : "warning text-dark") fs-6 px-3 py-2">
+                @Model.Status
+            </span>
+        </div>
+        <p class="mb-4">@Model.Description</p>
+        <div class="row g-4 mt-2">
+            <div class="col-sm-3">
+                <div class="text-muted small text-uppercase fw-bold mb-1">Type</div>
+                <div class="fw-medium">@Model.JobType</div>
+            </div>
+            <div class="col-sm-3">
+                <div class="text-muted small text-uppercase fw-bold mb-1">Deadline</div>
+                <div class="fw-medium">@Model.Deadline.ToString("dd MMM yyyy")</div>
+            </div>
+            <div class="col-sm-3">
+                <div class="text-muted small text-uppercase fw-bold mb-1">Compensation</div>
+                <div class="fw-medium">@(Model.PackageOrStipend ?? "Not Specified")</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h5 class="fw-bold mb-3 mt-5">Update Applicant Statuses</h5>
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+        <form asp-action="BulkUpdateApplicantStatus" method="post">
+            <input type="hidden" name="jdId" value="@Model.Id" />
+            <div class="row align-items-end mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold text-sm">Update selected to:</label>
+                    <select name="newStatus" class="form-select" required>
+                        <option value="">-- Select Status --</option>
+                        <option value="Shortlisted">Shortlisted</option>
+                        <option value="Interview">Interview</option>
+                        <option value="Offer">Offer</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Apply Status</button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light text-muted small text-uppercase">
+                        <tr>
+                            <th style="width: 40px;"><input type="checkbox" class="form-check-input" id="selectAll" /></th>
+                            <th class="ps-2">Student Name</th>
+                            <th>Roll No</th>
+                            <th>Department</th>
+                            <th>Current Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ 
+                            var applicants = Model.JobType == "Internship" 
+                                ? Model.InternshipApplications.Select(a => new { a.Student, a.Status }).ToList()
+                                : Model.JobApplications.Select(a => new { a.Student, a.Status }).ToList();
+                        }
+                        @if(!applicants.Any()) {
+                            <tr><td colspan="5" class="text-center py-5 text-muted">No applicants yet.</td></tr>
+                        }
+                        @foreach (var app in applicants) {
+                            <tr>
+                                <td><input type="checkbox" name="studentIds" value="@app.Student?.Id" class="form-check-input student-chk" /></td>
+                                <td class="ps-2 fw-semibold">@app.Student?.FullName</td>
+                                <td><code>@app.Student?.CollegeRollNo</code></td>
+                                <td>@app.Student?.Department</td>
+                                <td><span class="badge bg-light text-dark border">@app.Status</span></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('selectAll').addEventListener('change', function(e) {
+        document.querySelectorAll('.student-chk').forEach(c => c.checked = e.target.checked);
+    });
+</script>
