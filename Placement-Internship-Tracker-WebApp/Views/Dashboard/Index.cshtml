@@ -35,7 +35,7 @@
     ("Selected",           (object)Model.InternshipSelected,     "success", "check-circle"),
     ("Completed",          (object)Model.InternshipCompleted,    "teal",    "patch-check"),
     ("Rejected",           (object)Model.InternshipRejected,     "danger",  "x-circle"),
-    ("PPO Converted",      (object)Model.PPOConverted,           "warning", "star-fill"),
+    ("Full-time Offer",      (object)Model.FullTimeOffered,           "warning", "star-fill"),
 }) {
 <div class="col-6 col-md">
     <div class="card border-0 shadow-sm text-center p-3">
@@ -94,7 +94,7 @@
                 </div>
                 <div>
                     <span class="badge badge-@a.Status">@a.Status</span>
-                    @if (a.IsPPOConverted) { <span class="badge badge-ppo ms-1"><i class="bi bi-star-fill"></i></span> }
+                    @if (a.IsFullTimeOffered) { <span class="badge badge-fto ms-1"><i class="bi bi-star-fill"></i></span> }
                 </div>
             </li>
         }

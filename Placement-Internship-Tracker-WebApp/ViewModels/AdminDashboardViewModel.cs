@@ -12,7 +12,7 @@ namespace PlacementTracker.ViewModels
         public int TotalInternships { get; set; }
         public int TotalInternshipSelected { get; set; }
         public int TotalInternshipCompleted { get; set; }
-        public int TotalPPOConverted { get; set; }
+        public int TotalFullTimeOffered { get; set; }
         public double InternshipConversionRate { get; set; }
 
         public Dictionary<string, int> DepartmentWiseOffers { get; set; } = new();

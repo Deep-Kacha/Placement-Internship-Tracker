@@ -69,13 +69,13 @@ namespace PlacementTracker.Services
             return await _db.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> MarkPPOAsync(int id, string studentId, string? ppoPackage)
+        public async Task<bool> MarkFullTimeOfferedAsync(int id, string studentId, string? fullTimePackage)
         {
             var app = await _db.InternshipApplications
                 .FirstOrDefaultAsync(a => a.Id == id && a.StudentId == studentId);
             if (app == null) return false;
-            app.IsPPOConverted = true;
-            app.PPOPackage = ppoPackage;
+            app.IsFullTimeOffered = true;
+            app.FullTimePackage = fullTimePackage;
             app.UpdatedAt = DateTime.Now;
             return await _db.SaveChangesAsync() > 0;
         }

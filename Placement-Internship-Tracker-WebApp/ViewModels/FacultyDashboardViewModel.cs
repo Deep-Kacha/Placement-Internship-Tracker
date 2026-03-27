@@ -12,7 +12,7 @@ namespace PlacementTracker.ViewModels
         public int TotalOffers { get; set; }
         public int TotalInternships { get; set; }
         public int TotalInternshipSelected { get; set; }
-        public int TotalPPOConverted { get; set; }
+        public int TotalFullTimeOffered { get; set; }
     }
 
     public class StudentProgressItem
@@ -24,7 +24,7 @@ namespace PlacementTracker.ViewModels
         public string LatestStatus { get; set; } = string.Empty;
         public int TotalInternships { get; set; }
         public int InternshipSelected { get; set; }
-        public bool HasPPO { get; set; }
+        public bool HasFullTimeOffer { get; set; }
         public bool HasOngoingInternship { get; set; }
     }
 }

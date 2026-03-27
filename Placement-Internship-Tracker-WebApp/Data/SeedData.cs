@@ -48,6 +48,10 @@ namespace PlacementTracker.Data
                 FullName = "Rahul Sharma",
                 Department = "Computer Science",
                 CollegeRollNo = "CS2021001",
+                Branch = "CE", Semester = "8",
+                CGPA = 8.5, TenthPercentage = 85, TwelfthPercentage = 82, DiplomaPercentage = 0,
+                CurrentAddress = "123, University Road", City = "Rajkot", State = "Gujarat", Pincode = "360020",
+                ParentName = "Rajesh Kacha", ParentMobile = "9876543210", ParentEmail = "parent@example.com",
                 EmailConfirmed = true, IsApproved = true
             }, "Student@123", "Student");
 
@@ -57,6 +61,8 @@ namespace PlacementTracker.Data
                 FullName = "Priya Patel",
                 Department = "Information Technology",
                 CollegeRollNo = "IT2021015",
+                Branch = "IT", Semester = "8",
+                CGPA = 9.2, TenthPercentage = 92, TwelfthPercentage = 88,
                 EmailConfirmed = true, IsApproved = true
             }, "Student@123", "Student");
 
@@ -89,30 +95,42 @@ namespace PlacementTracker.Data
                     new JobDescription {
                         RecruiterId = recruiterAcc?.Id, Title = "SDE Intern", CompanyName = "Google", JobType = "Internship",
                         Location = "Bangalore", PackageOrStipend = "80,000/month",
+                        AnnualCTC = "12 LPA", Bond = "None", SelectionProcess = "OA + 3 Technical Rounds",
+                        EligibleBatches = "2024, 2025", EligibleCourses = "B.Tech CE/IT",
                         Description = "Join Google's Core Search team to build distributed systems that handle billions of queries per day.\n\nYou will work with senior engineers to implement caching algorithms and optimize search latency globally.",
                         Requirements = "• Strong algorithms and data structures\n• Proficient in C++ or Java\n• Available for 6 months continuously",
-                        Deadline = DateTime.Now.AddDays(10), IsActive = true, Status = "Approved", CreatedAt = DateTime.Now.AddDays(-15)
+                        Deadline = DateTime.Now.AddDays(10), CampusDriveDate = DateTime.Now.AddDays(15),
+                        IsActive = true, Status = "Approved", CreatedAt = DateTime.Now.AddDays(-15)
                     },
                     new JobDescription {
                         RecruiterId = recruiterAcc?.Id, Title = "Cloud Engineer", CompanyName = "Microsoft", JobType = "Placement",
                         Location = "Hyderabad", PackageOrStipend = "18 LPA",
+                        AnnualCTC = "18 LPA", Bond = "1 Year", SelectionProcess = "OA + Group Discussion + Technical + HR",
+                        EligibleBatches = "2024", EligibleCourses = "B.Tech All Branches",
                         Description = "Work with Azure infrastructure and deploy planet-scale cloud services. Ensure high availability of critical tenant workloads.",
                         Requirements = "• B.Tech in Computer Science\n• Knowledge of OS, Virtualization, and Cloud computing",
-                        Deadline = DateTime.Now.AddDays(5), IsActive = true, Status = "Approved", CreatedAt = DateTime.Now.AddDays(-10)
+                        Deadline = DateTime.Now.AddDays(5), CampusDriveDate = DateTime.Now.AddDays(8),
+                        IsActive = true, Status = "Approved", CreatedAt = DateTime.Now.AddDays(-10)
                     },
                     new JobDescription {
                         RecruiterId = recruiterAcc?.Id, Title = "SDE-1", CompanyName = "Amazon", JobType = "Placement",
                         Location = "Bangalore", PackageOrStipend = "24 LPA",
+                        AnnualCTC = "24 LPA", Bond = "None", SelectionProcess = "2 Technical + 1 Managerial Round",
+                        EligibleBatches = "2024", EligibleCourses = "B.Tech CE/IT/EC",
                         Description = "Build backend services for Amazon Retail. You will work on AWS heavily to scale up our order fulfillment pipelines.",
                         Requirements = "• High problem solving skills\n• Object Oriented Design understanding",
-                        Deadline = DateTime.Now.AddDays(2), IsActive = true, Status = "Approved", CreatedAt = DateTime.Now.AddDays(-5)
+                        Deadline = DateTime.Now.AddDays(2), CampusDriveDate = DateTime.Now.AddDays(4),
+                        IsActive = true, Status = "Approved", CreatedAt = DateTime.Now.AddDays(-5)
                     },
                     new JobDescription {
                         RecruiterId = recruiterAcc?.Id, Title = "Research Intern", CompanyName = "Microsoft", JobType = "Internship",
                         Location = "Remote", PackageOrStipend = "40000",
+                        AnnualCTC = "N/A", Bond = "None", SelectionProcess = "Resume Shortlisting + Interview",
+                        EligibleBatches = "2025, 2026", EligibleCourses = "B.Tech / M.Tech / PhD",
                         Description = "Work on cutting edge NLP and Large Language Models inside Microsoft Research. Publish papers and optimize transformer models.",
                         Requirements = "• Python, PyTorch, Deep Learning fundamentals\n• Previous research experience is a plus",
-                        Deadline = DateTime.Now.AddDays(12), IsActive = true, Status = "Approved", CreatedAt = DateTime.Now.AddDays(-2)
+                        Deadline = DateTime.Now.AddDays(12), CampusDriveDate = DateTime.Now.AddDays(20),
+                        IsActive = true, Status = "Approved", CreatedAt = DateTime.Now.AddDays(-2)
                     },
                     new JobDescription {
                         RecruiterId = recruiterAcc?.Id, Title = "Software Developer", CompanyName = "Flipkart", JobType = "Placement",
@@ -190,7 +208,7 @@ namespace PlacementTracker.Data
                     InternshipType = "Summer", WorkMode = "Hybrid", Status = "Completed",
                     AppliedDate = DateTime.Now.AddMonths(-5), StartDate = DateTime.Now.AddMonths(-3),
                     EndDate = DateTime.Now.AddMonths(-1), Stipend = "25000", Location = "Bangalore",
-                    CertificateReceived = true, IsPPOConverted = false,
+                    CertificateReceived = true, IsFullTimeOffered = false,
                     Notes = "Worked on search ranking improvements.", UpdatedAt = DateTime.Now.AddMonths(-1)
                 };
                 var intern2 = new InternshipApplication {
@@ -250,8 +268,8 @@ namespace PlacementTracker.Data
                     InternshipType = "Winter", WorkMode = "On-Site", Status = "Completed",
                     AppliedDate = DateTime.Now.AddMonths(-4), StartDate = DateTime.Now.AddMonths(-3),
                     EndDate = DateTime.Now.AddMonths(-2), Stipend = "10000", Location = "Pune",
-                    CertificateReceived = true, IsPPOConverted = true, PPOPackage = "3.6 LPA",
-                    Notes = "PPO extended after winter internship performance.", UpdatedAt = DateTime.Now.AddMonths(-2)
+                    CertificateReceived = true, IsFullTimeOffered = true, FullTimePackage = "3.6 LPA",
+                    Notes = "Full-time offer extended after winter internship performance.", UpdatedAt = DateTime.Now.AddMonths(-2)
                 };
                 context.InternshipApplications.Add(intern);
                 await context.SaveChangesAsync();

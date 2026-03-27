@@ -18,17 +18,67 @@
                     </div>
                 </div>
 
-                <div class="d-flex flex-wrap gap-3 mb-4">
-                    <span class="badge bg-light text-dark border py-2 px-3 fw-medium"><i class="bi bi-briefcase me-2"></i>@Model.JobType</span>
-                    <span class="badge bg-light text-dark border py-2 px-3 fw-medium text-danger"><i class="bi bi-calendar-x me-2"></i>Apply By: @Model.Deadline.ToString("dd MMM yyyy")</span>
-                    <span class="badge bg-light text-dark border py-2 px-3 fw-medium"><i class="bi bi-geo-alt me-2"></i>@(Model.Location ?? "Not Specified")</span>
-                    <span class="badge bg-light text-dark border py-2 px-3 fw-medium"><i class="bi bi-cash me-2"></i>@(Model.PackageOrStipend ?? "Not Specified")</span>
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-md-3">
+                        <div class="text-muted small text-uppercase fw-bold mb-1">Job Type</div>
+                        <div class="fw-medium">@Model.JobType</div>
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.AnnualCTC)) {
+                    <div class="col-6 col-md-3">
+                        <div class="text-muted small text-uppercase fw-bold mb-1">Annual CTC</div>
+                        <div class="fw-medium text-brand-700">@Model.AnnualCTC</div>
+                    </div>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Stipend)) {
+                    <div class="col-6 col-md-3">
+                        <div class="text-muted small text-uppercase fw-bold mb-1">Stipend / Month</div>
+                        <div class="fw-medium text-brand-700">@Model.Stipend</div>
+                    </div>
+                    }
+                    @if (Model.JobType == "Internship" && !string.IsNullOrEmpty(Model.InternshipDuration)) {
+                    <div class="col-6 col-md-3">
+                        <div class="text-muted small text-uppercase fw-bold mb-1">Duration</div>
+                        <div class="fw-medium">@Model.InternshipDuration</div>
+                    </div>
+                    }
+                    <div class="col-6 col-md-3">
+                        <div class="text-muted small text-uppercase fw-bold mb-1">Apply By</div>
+                        <div class="fw-medium text-danger">@Model.Deadline.ToString("dd MMM yyyy")</div>
+                    </div>
+                    @if (Model.DateOfJoining.HasValue) {
+                    <div class="col-6 col-md-3">
+                        <div class="text-muted small text-uppercase fw-bold mb-1">Joining Date</div>
+                        <div class="fw-medium text-success">@Model.DateOfJoining.Value.ToString("dd MMM yyyy")</div>
+                    </div>
+                    }
+                    <div class="col-6 col-md-3">
+                        <div class="text-muted small text-uppercase fw-bold mb-1">Location</div>
+                        <div class="fw-medium">@(Model.Location ?? "TBD")</div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="text-muted small text-uppercase fw-bold mb-1">Eligibility</div>
+                        <div class="fw-medium small">@(Model.EligibleBatches ?? "All") / @(Model.EligibleCourses ?? "All")</div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    @if (!string.IsNullOrEmpty(Model.RegistrationLink)) {
+                        <a href="@Model.RegistrationLink" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-link-45deg me-1"></i>External Link ↗</a>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.DocumentsPath)) {
+                        <a href="@Model.DocumentsPath" target="_blank" class="btn btn-sm btn-outline-success"><i class="bi bi-file-earmark-pdf me-1"></i>Download JD</a>
+                    }
                 </div>
 
                 <hr class="my-4 text-muted">
 
                 <h5 class="fw-bold mb-3">About the Role</h5>
                 <p class="text-secondary" style="white-space: pre-wrap">@Model.Description</p>
+
+                @if(!string.IsNullOrWhiteSpace(Model.SelectionProcess)) {
+                    <h5 class="fw-bold mb-3 mt-4">Selection Process</h5>
+                    <div class="p-3 bg-light rounded text-sm mb-4">@Model.SelectionProcess</div>
+                }
 
                 @if(!string.IsNullOrWhiteSpace(Model.Requirements)) {
                     <h5 class="fw-bold mb-3 mt-4">Requirements & Skills</h5>

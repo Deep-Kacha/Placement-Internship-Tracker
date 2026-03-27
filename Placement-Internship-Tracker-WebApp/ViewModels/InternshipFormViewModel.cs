@@ -42,11 +42,11 @@ namespace PlacementTracker.ViewModels
         [Display(Name = "Notes / Remarks")]
         public string? Notes { get; set; }
 
-        [Display(Name = "PPO Converted")]
-        public bool IsPPOConverted { get; set; } = false;
+        [Display(Name = "Full-time Offered")]
+        public bool IsFullTimeOffered { get; set; } = false;
 
-        [Display(Name = "PPO Package (if converted)")]
-        public string? PPOPackage { get; set; }
+        [Display(Name = "Full-time Package (if offered)")]
+        public string? FullTimePackage { get; set; }
 
         [Display(Name = "Certificate Received")]
         public bool CertificateReceived { get; set; } = false;
@@ -59,7 +59,7 @@ namespace PlacementTracker.ViewModels
 
         public static List<string> TypeList => new()
         {
-            "Summer", "Winter", "Industrial Training", "Research", "PPO", "Part-Time"
+            "Summer", "Winter", "Industrial Training", "Research", "Full-time Offered", "Part-Time"
         };
 
         public static List<string> ModeList => new()

@@ -16,11 +16,12 @@
     <div class="card border-0 shadow-sm"><div class="card-body">
     <h6 class="fw-semibold mb-3">Students (@students.Count)</h6>
     <div class="table-responsive"><table class="table table-sm table-hover mb-0">
-        <thead class="table-light"><tr><th>Name</th><th>Email</th><th>Department</th><th>Roll No</th><th>Approved</th><th>Active</th><th></th></tr></thead>
+        <thead class="table-light"><tr><th>Name</th><th>Branch/Sem</th><th>CGPA</th><th>Approved</th><th>Active</th><th></th></tr></thead>
         <tbody>@foreach (var s in students){
         <tr class="@(!s.IsActive?"table-danger":"") @(!s.IsApproved?"table-warning":"")">
-            <td class="fw-semibold">@s.FullName</td><td class="small">@s.Email</td>
-            <td class="small">@s.Department</td><td class="small">@s.CollegeRollNo</td>
+            <td class="fw-semibold">@s.FullName<br/><small class="text-muted">@s.Email</small></td>
+            <td class="small">@(s.Branch ?? "-") / @(s.Semester ?? "-")</td>
+            <td class="small">@(s.CGPA?.ToString("0.00") ?? "-")</td>
             <td>@if(s.IsApproved){<span class="badge bg-success">Yes</span>}else{<span class="badge bg-warning text-dark">Pending</span>}</td>
             <td>@if(s.IsActive){<span class="badge bg-success">Yes</span>}else{<span class="badge bg-danger">No</span>}</td>
             <td>

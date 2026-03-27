@@ -24,12 +24,16 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxBY2Nlc3NEZW5pZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Placement-Internship-Tracker/Placement-Internship-Tracker-WebApp/Views/Account/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+[D:/Placement-Internship-Tracker/Placement-Internship-Tracker-WebApp/Views/Account/ForgotPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxGb3Jnb3RQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Placement-Internship-Tracker/Placement-Internship-Tracker-WebApp/Views/Account/Notifications.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxOb3RpZmljYXRpb25zLmNzaHRtbA==
+[D:/Placement-Internship-Tracker/Placement-Internship-Tracker-WebApp/Views/Account/ForgotPasswordConfirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxGb3Jnb3RQYXNzd29yZENvbmZpcm1hdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Placement-Internship-Tracker/Placement-Internship-Tracker-WebApp/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Placement-Internship-Tracker/Placement-Internship-Tracker-WebApp/Views/Account/Profile.cshtml]
@@ -38,6 +42,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Placement-Internship-Tracker/Placement-Internship-Tracker-WebApp/Views/Account/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Placement-Internship-Tracker/Placement-Internship-Tracker-WebApp/Views/Account/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Placement-Internship-Tracker/Placement-Internship-Tracker-WebApp/Views/Account/ResetPasswordConfirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkQ29uZmlybWF0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Placement-Internship-Tracker/Placement-Internship-Tracker-WebApp/Views/Account/Settings.cshtml]
@@ -114,6 +126,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Placement-Internship-Tracker/Placement-Internship-Tracker-WebApp/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Placement-Internship-Tracker/Placement-Internship-Tracker-WebApp/Views/Home/SubmitJd.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTdWJtaXRKZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Placement-Internship-Tracker/Placement-Internship-Tracker-WebApp/Views/Internships/Create.cshtml]

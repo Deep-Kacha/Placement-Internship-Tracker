@@ -10,6 +10,8 @@ namespace PlacementTracker.ViewModels
         [Compare("Password")] public string ConfirmPassword { get; set; } = string.Empty;
         public string? Department { get; set; }
         public string? CollegeRollNo { get; set; }
+        public string? Branch { get; set; }
+        public string? Semester { get; set; }
         public string? Phone { get; set; }
         public string Role { get; set; } = "Student";
     }
