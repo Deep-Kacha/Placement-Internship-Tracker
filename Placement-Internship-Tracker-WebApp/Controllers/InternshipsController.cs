@@ -13,9 +13,10 @@ namespace PlacementTracker.Controllers
     {
         private readonly InternshipService _svc;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly NotificationService _notificationSvc;
 
-        public InternshipsController(InternshipService s, UserManager<ApplicationUser> u)
-        { _svc = s; _userManager = u; }
+        public InternshipsController(InternshipService s, UserManager<ApplicationUser> u, NotificationService n)
+        { _svc = s; _userManager = u; _notificationSvc = n; }
 
         private async Task<string> GetUserId()
             => (await _userManager.GetUserAsync(User))!.Id;
@@ -59,7 +60,7 @@ namespace PlacementTracker.Controllers
                 StartDate = app.StartDate, EndDate = app.EndDate,
                 Stipend = app.Stipend, Location = app.Location,
                 JobLink = app.JobLink, Notes = app.Notes,
-                IsPPOConverted = app.IsPPOConverted, PPOPackage = app.PPOPackage,
+                IsFullTimeOffered = app.IsFullTimeOffered, FullTimePackage = app.FullTimePackage,
                 CertificateReceived = app.CertificateReceived
             });
         }
@@ -83,7 +84,7 @@ namespace PlacementTracker.Controllers
             app.StartDate = model.StartDate; app.EndDate = model.EndDate;
             app.Stipend = model.Stipend; app.Location = model.Location;
             app.JobLink = model.JobLink; app.Notes = model.Notes;
-            app.IsPPOConverted = model.IsPPOConverted; app.PPOPackage = model.PPOPackage;
+            app.IsFullTimeOffered = model.IsFullTimeOffered; app.FullTimePackage = model.FullTimePackage;
             app.CertificateReceived = model.CertificateReceived;
 
             await _svc.UpdateAsync(app);
@@ -109,16 +110,22 @@ namespace PlacementTracker.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateStatus(int id, string status)
         {
-            await _svc.UpdateStatusAsync(id, await GetUserId(), status);
+            var userId = await GetUserId();
+            await _svc.UpdateStatusAsync(id, userId, status);
+            var app = await _svc.GetByIdAsync(id);
+            await _notificationSvc.SendAsync(userId, $"Update: Your internship status for {app?.CompanyName} has been changed to {status}.");
             TempData["Success"] = $"Status updated to {status}.";
             return RedirectToAction(nameof(Index));
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> MarkPPO(int id, string? ppoPackage)
+        public async Task<IActionResult> MarkFullTime(int id, string? fullTimePackage)
         {
-            await _svc.MarkPPOAsync(id, await GetUserId(), ppoPackage);
-            TempData["Success"] = "Marked as PPO converted! 🎉";
+            var userId = await GetUserId();
+            await _svc.MarkFullTimeOfferedAsync(id, userId, fullTimePackage);
+            var app = await _svc.GetByIdAsync(id);
+            await _notificationSvc.SendAsync(userId, $"Congratulations! You have received a Full-time Placement Offer from {app?.CompanyName}. 🎉");
+            TempData["Success"] = "Marked as Full-time offered! 🎉";
             return RedirectToAction(nameof(Details), new { id });
         }
 
@@ -170,7 +177,7 @@ namespace PlacementTracker.Controllers
             string[] headers = {
                 "Company","Role","Type","Mode","Status",
                 "Applied Date","Start Date","End Date",
-                "Stipend/Month","PPO","PPO Package","Certificate","Location","Notes"
+                "Stipend/Month","Full-time Offered","FTO Package","Certificate","Location","Notes"
             };
             for (int i = 0; i < headers.Length; i++) ws.Cell(1, i+1).Value = headers[i];
             int row = 2;
@@ -185,8 +192,8 @@ namespace PlacementTracker.Controllers
                 ws.Cell(row, 7).Value  = a.StartDate?.ToString("dd-MM-yyyy") ?? "-";
                 ws.Cell(row, 8).Value  = a.EndDate?.ToString("dd-MM-yyyy") ?? "-";
                 ws.Cell(row, 9).Value  = a.Stipend != null ? $"₹{a.Stipend}" : "-";
-                ws.Cell(row, 10).Value = a.IsPPOConverted ? "Yes" : "No";
-                ws.Cell(row, 11).Value = a.PPOPackage ?? "-";
+                ws.Cell(row, 10).Value = a.IsFullTimeOffered ? "Yes" : "No";
+                ws.Cell(row, 11).Value = a.FullTimePackage ?? "-";
                 ws.Cell(row, 12).Value = a.CertificateReceived ? "Yes" : "No";
                 ws.Cell(row, 13).Value = a.Location ?? "-";
                 ws.Cell(row, 14).Value = a.Notes ?? "-";

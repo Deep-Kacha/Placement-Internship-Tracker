@@ -29,8 +29,8 @@ namespace PlacementTracker.Models
         [DataType(DataType.Date)] public DateTime? EndDate { get; set; }
 
         public string? Stipend { get; set; }
-        public bool IsPPOConverted { get; set; } = false;
-        public string? PPOPackage { get; set; }
+        public bool IsFullTimeOffered { get; set; } = false;
+        public string? FullTimePackage { get; set; }
         public bool CertificateReceived { get; set; } = false;
 
         public string? Location { get; set; }

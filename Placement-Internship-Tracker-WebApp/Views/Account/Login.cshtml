@@ -71,7 +71,7 @@
                     <input asp-for="RememberMe" class="w-4 h-4 text-brand-600 border-gray-300 rounded focus:ring-brand-600 focus:ring-2 cursor-pointer"/>
                     <span class="text-sm font-medium text-gray-600 group-hover:text-gray-900 transition-colors">Remember me</span>
                 </label>
-                <a href="#" class="text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors">Forgot password?</a>
+                <a asp-action="ForgotPassword" class="text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors">Forgot password?</a>
             </div>
 
             <button type="submit" class="w-full py-3.5 bg-brand-700 hover:bg-brand-800 text-white font-bold rounded-xl transition-all shadow-lg shadow-brand-700/30 flex items-center justify-center gap-2 mt-4">
@@ -83,13 +83,49 @@
             <p class="text-gray-600 text-sm">Don't have an account? <a asp-action="Register" class="text-brand-600 font-bold hover:text-brand-800 transition-colors">Create Account →</a></p>
         </div>
 
-        <div class="mt-8 p-4 bg-gray-50 border border-gray-100 rounded-xl">
-            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Demo Accounts</p>
-            <ul class="text-xs text-gray-600 space-y-1.5 font-mono">
-                <li><span class="font-sans font-medium w-16 inline-block text-gray-500">Student</span> rahul@student.com / Student@123</li>
-                <li><span class="font-sans font-medium w-16 inline-block text-gray-500">Faculty</span> faculty@placement.com / Faculty@123</li>
-                <li><span class="font-sans font-medium w-16 inline-block text-gray-500">Admin</span> admin@placement.com / Admin@123</li>
-                <li><span class="font-sans font-medium w-16 inline-block text-gray-500">Super</span> superadmin@placement.com / Admin@123</li>
+        <div class="mt-8 relative hidden sm:block">
+            <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                <div class="w-full border-t border-gray-200"></div>
+            </div>
+            <div class="relative flex justify-center">
+                <span class="px-3 bg-white text-xs font-bold text-gray-400 uppercase tracking-wide">Test Drive</span>
+            </div>
+        </div>
+
+        <div class="mt-6 p-5 bg-gradient-to-br from-cream-50 to-white border border-brand-100 rounded-2xl shadow-sm hidden sm:block">
+            <div class="flex items-center gap-2 mb-3 text-brand-700">
+                <i class="bi bi-info-circle-fill"></i>
+                <span class="text-xs font-bold uppercase tracking-wider">Demo Credentials</span>
+            </div>
+            <ul class="text-[0.8rem] text-gray-600 space-y-3 font-mono">
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
+                    <span class="font-sans font-semibold text-gray-500">Student</span> 
+                    <div class="sm:text-right">
+                        <span class="bg-gray-100 px-2 py-0.5 rounded text-gray-800 break-all">rahul@student.com</span> 
+                        <span class="text-gray-400 font-sans text-xs ml-1 whitespace-nowrap inline-block mt-1 sm:mt-0">/ Student@123</span>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
+                    <span class="font-sans font-semibold text-gray-500">Faculty</span> 
+                    <div class="sm:text-right">
+                        <span class="bg-gray-100 px-2 py-0.5 rounded text-gray-800 break-all">faculty@placement.com</span> 
+                        <span class="text-gray-400 font-sans text-xs ml-1 whitespace-nowrap inline-block mt-1 sm:mt-0">/ Faculty@123</span>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
+                    <span class="font-sans font-semibold text-gray-500">Admin</span> 
+                    <div class="sm:text-right">
+                        <span class="bg-gray-100 px-2 py-0.5 rounded text-gray-800 break-all">admin@placement.com</span> 
+                        <span class="text-gray-400 font-sans text-xs ml-1 whitespace-nowrap inline-block mt-1 sm:mt-0">/ Admin@123</span>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0 pt-2 border-t border-brand-50 mt-1">
+                    <span class="font-sans font-semibold text-brand-600">SuperAdmin</span> 
+                    <div class="sm:text-right">
+                        <span class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded font-bold break-all">superadmin@placement.com</span> 
+                        <span class="text-brand-400 font-sans text-xs ml-1 whitespace-nowrap inline-block mt-1 sm:mt-0">/ Admin@123</span>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>

@@ -18,7 +18,7 @@ namespace PlacementTracker.ViewModels
         public int InternshipSelected { get; set; }
         public int InternshipCompleted { get; set; }
         public int InternshipRejected { get; set; }
-        public int PPOConverted { get; set; }
+        public int FullTimeOffered { get; set; }
         public bool HasOngoingInternship { get; set; }
 
         public List<InterviewSchedule> UpcomingInterviews { get; set; } = new();

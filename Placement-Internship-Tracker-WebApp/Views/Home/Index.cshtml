@@ -62,14 +62,15 @@
             </a>
 
             <ul class="hidden md:flex space-x-10 font-medium text-gray-600">
-                <li><a href="#features" class="hover:text-brand-700 transition">Features</a></li>
                 <li><a href="#roles" class="hover:text-brand-700 transition">For Roles</a></li>
                 <li><a href="#roadmap" class="hover:text-brand-700 transition">Roadmap</a></li>
+                <li><a href="#features" class="hover:text-brand-700 transition">Features</a></li>
+                <li><a href="/Home/SubmitJd" class="hover:text-brand-700 transition font-semibold">Submit JD</a></li>
             </ul>
 
             <div class="flex items-center gap-4">
                 <a href="/Account/Login" class="text-gray-700 font-medium hover:text-brand-700 hidden sm:block transition">Log in</a>
-                <a href="/Account/Register" class="bg-gray-900 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-brand-700 transition shadow-lg shadow-gray-900/20">
+                <a href="/Account/Login" class="bg-gray-900 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-brand-700 transition shadow-lg shadow-gray-900/20">
                     Get Started
                 </a>
             </div>
@@ -92,7 +93,7 @@
                     Trackeoo helps synchronize students, faculty, and recruiters. Get real-time updates on applications, interviews, and offers in one unified platform.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="/Account/Register" class="bg-brand-700 text-white px-8 py-3.5 rounded-xl font-medium text-lg hover:bg-brand-800 transition shadow-xl shadow-brand-500/30 flex items-center justify-center gap-2">
+                    <a href="/Account/Login" class="bg-brand-700 text-white px-8 py-3.5 rounded-xl font-medium text-lg hover:bg-brand-800 transition shadow-xl shadow-brand-500/30 flex items-center justify-center gap-2">
                         Start Tracking Free
                         <i class="bi bi-arrow-right"></i>
                     </a>
@@ -116,35 +117,50 @@
                             <div class="h-8 w-8 bg-brand-100 text-brand-700 rounded-full flex items-center justify-center"><i class="bi bi-person-fill"></i></div>
                         </div>
                         <div class="space-y-4">
-                            <div class="p-4 border border-gray-100 rounded-xl bg-white shadow-sm flex items-center justify-between">
+                            <!-- Google -->
+                            <div class="p-4 border border-gray-200 rounded-xl bg-white shadow-sm flex items-center justify-between">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500 text-xl"><i class="bi bi-google"></i></div>
-                                    <div>
-                                        <div class="h-4 w-24 bg-gray-800 rounded mb-2"></div>
-                                        <div class="h-3 w-16 bg-gray-300 rounded"></div>
-                                    </div>
+                                <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600 text-xl">
+                                    <i class="bi bi-google"></i>
                                 </div>
-                                <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">Offer Received</span>
+                                <div>
+                                    <div class="text-gray-900 font-semibold">Google</div>
+                                    <div class="text-sm text-gray-500">Software Engineer</div>
+                                </div>
+                                </div>
+                                <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
+                                Offer Received
+                                </span>
                             </div>
-                            <div class="p-4 border border-brand-100 rounded-xl bg-brand-50 shadow-sm flex items-center justify-between">
+                            <!-- Microsoft -->
+                            <div class="p-4 border border-blue-200 rounded-xl bg-blue-50 shadow-sm flex items-center justify-between">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 bg-white border border-brand-100 rounded-lg flex items-center justify-center text-brand-500 text-xl"><i class="bi bi-microsoft"></i></div>
-                                    <div>
-                                        <div class="h-4 w-32 bg-brand-900 rounded mb-2"></div>
-                                        <div class="h-3 w-20 bg-brand-300 rounded"></div>
-                                    </div>
+                                <div class="w-12 h-12 bg-white border border-blue-200 rounded-lg flex items-center justify-center text-blue-600 text-xl">
+                                    <i class="bi bi-microsoft"></i>
                                 </div>
-                                <span class="px-3 py-1 bg-brand-600 text-white rounded-full text-xs font-semibold">Interviewing</span>
+                                <div>
+                                    <div class="text-blue-900 font-semibold">Microsoft</div>
+                                    <div class="text-sm text-blue-600">Product Manager</div>
+                                </div>
+                                </div>
+                                <span class="px-3 py-1 bg-blue-600 text-white rounded-full text-xs font-semibold">
+                                Interviewing
+                                </span>
                             </div>
-                            <div class="p-4 border border-gray-100 rounded-xl bg-white shadow-sm flex items-center justify-between">
+                            <!-- Amazon -->
+                            <div class="p-4 border border-gray-200 rounded-xl bg-white shadow-sm flex items-center justify-between">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500 text-xl"><i class="bi bi-amazon"></i></div>
-                                    <div>
-                                        <div class="h-4 w-20 bg-gray-800 rounded mb-2"></div>
-                                        <div class="h-3 w-16 bg-gray-300 rounded"></div>
-                                    </div>
+                                <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600 text-xl">
+                                    <i class="bi bi-amazon"></i>
                                 </div>
-                                <span class="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-semibold">Screening</span>
+                                <div>
+                                    <div class="text-gray-900 font-semibold">Amazon</div>
+                                    <div class="text-sm text-gray-500">Sales Associate</div>
+                                </div>
+                                </div>
+                                <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-semibold">
+                                Screening
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -157,7 +173,7 @@
                     </div>
                     <div>
                         <div class="text-xs text-gray-500 font-medium">Status Update</div>
-                        <div class="text-sm font-bold text-gray-900">John accepted the offer!</div>
+                        <div class="text-sm font-bold text-gray-900">Deep accepted the offer!</div>
                     </div>
                 </div>
             </div>

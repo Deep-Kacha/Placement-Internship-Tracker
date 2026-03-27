@@ -28,10 +28,10 @@
         <div class="col-md-6"><label asp-for="JobLink" class="form-label fw-semibold">Portal Link</label><input asp-for="JobLink" class="form-control"/></div>
         <div class="col-md-6"><label asp-for="Notes" class="form-label fw-semibold"></label><textarea asp-for="Notes" class="form-control" rows="1"></textarea></div>
         <div class="col-md-4"><div class="form-check form-switch mt-3">
-            <input asp-for="IsPPOConverted" class="form-check-input" type="checkbox" id="ppoSwitch"/>
-            <label class="form-check-label fw-semibold" for="ppoSwitch">PPO Converted</label></div></div>
-        <div class="col-md-4" id="ppoPackageDiv"><label asp-for="PPOPackage" class="form-label fw-semibold"></label>
-            <input asp-for="PPOPackage" class="form-control" placeholder="e.g. 8 LPA"/></div>
+            <input asp-for="IsFullTimeOffered" class="form-check-input" type="checkbox" id="ftoSwitch"/>
+            <label class="form-check-label fw-semibold" for="ftoSwitch">Full-time Offered</label></div></div>
+        <div class="col-md-4" id="ftoPackageDiv"><label asp-for="FullTimePackage" class="form-label fw-semibold"></label>
+            <input asp-for="FullTimePackage" class="form-control" placeholder="e.g. 8 LPA"/></div>
         <div class="col-md-4"><div class="form-check form-switch mt-3">
             <input asp-for="CertificateReceived" class="form-check-input" type="checkbox"/>
             <label class="form-check-label fw-semibold">Certificate Received</label></div></div>
@@ -45,10 +45,10 @@
 
 @section Scripts {
 <script>
-const ppoSwitch = document.getElementById('ppoSwitch');
-const ppoDiv = document.getElementById('ppoPackageDiv');
-function togglePPO() { ppoDiv.style.display = ppoSwitch.checked ? 'block' : 'none'; }
-ppoSwitch.addEventListener('change', togglePPO);
-togglePPO();
+const ftoSwitch = document.getElementById('ftoSwitch');
+const ftoDiv = document.getElementById('ftoPackageDiv');
+function toggleFTO() { ftoDiv.style.display = ftoSwitch.checked ? 'block' : 'none'; }
+ftoSwitch.addEventListener('change', toggleFTO);
+toggleFTO();
 </script>
 }

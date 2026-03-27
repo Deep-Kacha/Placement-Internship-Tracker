@@ -49,7 +49,7 @@ namespace PlacementTracker.Services
                 InternshipSelected      = internships.Count(a => a.Status == "Selected"),
                 InternshipCompleted     = internships.Count(a => a.Status == "Completed"),
                 InternshipRejected      = internships.Count(a => a.Status == "Rejected"),
-                PPOConverted            = internships.Count(a => a.IsPPOConverted),
+                FullTimeOffered          = internships.Count(a => a.IsFullTimeOffered),
                 HasOngoingInternship    = internships.Any(a => a.IsOngoing),
 
                 UpcomingInterviews           = upcomingPlacement,
@@ -88,9 +88,9 @@ namespace PlacementTracker.Services
                 TotalInternships         = internships.Count,
                 TotalInternshipSelected  = internships.Count(a => a.Status == "Selected"),
                 TotalInternshipCompleted = internships.Count(a => a.Status == "Completed"),
-                TotalPPOConverted        = internships.Count(a => a.IsPPOConverted),
+                TotalFullTimeOffered       = internships.Count(a => a.IsFullTimeOffered),
                 InternshipConversionRate = internships.Count > 0
-                    ? Math.Round((double)internships.Count(a => a.IsPPOConverted) / internships.Count * 100, 1) : 0,
+                    ? Math.Round((double)internships.Count(a => a.IsFullTimeOffered) / internships.Count * 100, 1) : 0,
 
                 StatusDistribution = new Dictionary<string, int>
                 {
