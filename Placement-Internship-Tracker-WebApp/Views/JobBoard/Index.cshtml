@@ -1,0 +1,46 @@
+@model IEnumerable<PlacementTracker.Models.JobDescription>
+@{ ViewData["Title"] = "Discover Jobs"; 
+   var appliedList = ViewBag.AppliedJobIds as HashSet<int?> ?? new HashSet<int?>();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0">Discover Opportunities</h4>
+    <div class="btn-group shadow-sm">
+        <a asp-action="Index" asp-route-type="" class="btn btn-outline-secondary @(Context.Request.Query["type"]==""?"active":"")">All</a>
+        <a asp-action="Index" asp-route-type="Placement" class="btn btn-outline-secondary @(Context.Request.Query["type"]=="Placement"?"active":"")">Placements</a>
+        <a asp-action="Index" asp-route-type="Internship" class="btn btn-outline-secondary @(Context.Request.Query["type"]=="Internship"?"active":"")">Internships</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    @if(!Model.Any()) {
+        <div class="col-12 text-center py-5 text-muted">No active job postings right now. Check back later!</div>
+    }
+    @foreach(var jd in Model) {
+        bool isApplied = appliedList.Contains(jd.Id);
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm hover-shadow transition-all">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between mb-3">
+                        <div class="bg-light rounded p-2 text-primary">
+                            <i class="bi bi-buildings fs-4"></i>
+                        </div>
+                        <span class="badge bg-light text-dark border align-self-start">@jd.JobType</span>
+                    </div>
+                    <h5 class="fw-bold mb-1">@jd.Title</h5>
+                    <p class="text-muted small fw-medium mb-3">@jd.CompanyName</p>
+                    
+                    <div class="d-flex flex-wrap gap-2 text-muted small mb-4">
+                        <span title="Deadline"><i class="bi bi-calendar-event me-1"></i>@jd.Deadline.ToString("dd MMM")</span>
+                        <span title="Location"><i class="bi bi-geo-alt me-1"></i>@(jd.Location ?? "TBD")</span>
+                        <span title="Compensation"><i class="bi bi-cash me-1"></i>@(jd.PackageOrStipend ?? "TBD")</span>
+                    </div>
+                    
+                    <a asp-action="Details" asp-route-id="@jd.Id" class="btn w-100 fw-semibold @(isApplied ? "btn-light border text-success disabled" : "btn-primary")">
+                        @(isApplied ? "Applied ✓" : "View Details & Apply")
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

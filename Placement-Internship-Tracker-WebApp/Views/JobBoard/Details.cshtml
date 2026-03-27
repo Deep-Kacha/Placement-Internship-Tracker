@@ -1,0 +1,57 @@
+@model PlacementTracker.Models.JobDescription
+@{ ViewData["Title"] = "Job Details"; 
+   bool hasApplied = ViewBag.HasApplied ?? false;
+}
+
+<div class="mb-4">
+    <a asp-action="Index" class="text-decoration-none text-muted small"><i class="bi bi-arrow-left me-1"></i>Back to Board</a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm p-2 p-md-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-md-center flex-column flex-md-row mb-4 gap-3">
+                    <div>
+                        <h3 class="fw-bold mb-1">@Model.Title</h3>
+                        <div class="text-muted fs-5"><i class="bi bi-building me-2"></i>@Model.CompanyName</div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-3 mb-4">
+                    <span class="badge bg-light text-dark border py-2 px-3 fw-medium"><i class="bi bi-briefcase me-2"></i>@Model.JobType</span>
+                    <span class="badge bg-light text-dark border py-2 px-3 fw-medium text-danger"><i class="bi bi-calendar-x me-2"></i>Apply By: @Model.Deadline.ToString("dd MMM yyyy")</span>
+                    <span class="badge bg-light text-dark border py-2 px-3 fw-medium"><i class="bi bi-geo-alt me-2"></i>@(Model.Location ?? "Not Specified")</span>
+                    <span class="badge bg-light text-dark border py-2 px-3 fw-medium"><i class="bi bi-cash me-2"></i>@(Model.PackageOrStipend ?? "Not Specified")</span>
+                </div>
+
+                <hr class="my-4 text-muted">
+
+                <h5 class="fw-bold mb-3">About the Role</h5>
+                <p class="text-secondary" style="white-space: pre-wrap">@Model.Description</p>
+
+                @if(!string.IsNullOrWhiteSpace(Model.Requirements)) {
+                    <h5 class="fw-bold mb-3 mt-4">Requirements & Skills</h5>
+                    <p class="text-secondary" style="white-space: pre-wrap">@Model.Requirements</p>
+                }
+
+                <div class="mt-5 p-4 bg-secondary bg-opacity-10 rounded-3 text-center">
+                    @if (hasApplied) {
+                        <h5 class="fw-bold text-success mb-2"><i class="bi bi-check-circle-fill me-2"></i>Application Submitted</h5>
+                        <p class="text-muted mb-0">You have already applied for this role. Track its status in your dashboard.</p>
+                    }
+                    else if (DateTime.Today > Model.Deadline) {
+                        <h5 class="fw-bold text-danger mb-0"><i class="bi bi-x-circle-fill me-2"></i>Deadline Passed</h5>
+                    }
+                    else {
+                        <form asp-action="Apply" method="post">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <h5 class="fw-bold mb-3">Interested in this role?</h5>
+                            <button type="submit" class="btn btn-primary btn-lg shadow-sm px-5 rounded-pill" onclick="return confirm('Confirm application submission?')">Apply Now</button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

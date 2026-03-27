@@ -1,0 +1,101 @@
+@model PlacementTracker.ViewModels.AdminDashboardViewModel
+@{ ViewData["Title"] = "Analytics Dashboard"; }
+<h4 class="fw-bold mb-4">Placement & Internship Analytics</h4>
+
+<p class="text-uppercase text-muted small fw-semibold mb-1" style="letter-spacing:1px;"><i class="bi bi-briefcase me-1"></i> Placement Overview</p>
+<div class="row g-3 mb-4">
+@foreach (var (label,val,color,icon) in new[]{
+    ("Total Students",(object)Model.TotalStudents,"primary","people"),
+    ("Total Faculty",(object)Model.TotalFaculty,"secondary","person-badge"),
+    ("Total Applications",(object)Model.TotalApplications,"info","briefcase"),
+    ("Total Offers",(object)Model.TotalOffers,"success","trophy"),
+    ("Placement Rate",(object)$"{Model.PlacementRate}%","warning","graph-up")
+}){
+<div class="col-6 col-md"><div class="card border-0 shadow-sm text-center p-3">
+    <i class="bi bi-@icon fs-3 text-@color"></i>
+    <div class="fs-2 fw-bold text-@color">@val</div>
+    <small class="text-muted">@label</small>
+</div></div>
+}
+</div>
+
+<p class="text-uppercase text-muted small fw-semibold mb-1" style="letter-spacing:1px;"><i class="bi bi-building me-1"></i> Internship Overview</p>
+<div class="row g-3 mb-4">
+@foreach (var (label,val,color,icon) in new[]{
+    ("Total Internships",(object)Model.TotalInternships,"info","building"),
+    ("Selected",(object)Model.TotalInternshipSelected,"success","check-circle"),
+    ("Completed",(object)Model.TotalInternshipCompleted,"teal","patch-check"),
+    ("PPO Converted",(object)Model.TotalPPOConverted,"warning","star-fill"),
+    ("PPO Rate",(object)$"{Model.InternshipConversionRate}%","danger","percent"),
+}){
+<div class="col-6 col-md"><div class="card border-0 shadow-sm text-center p-3">
+    <i class="bi bi-@icon fs-3 text-@color"></i>
+    <div class="fs-2 fw-bold text-@color">@val</div>
+    <small class="text-muted">@label</small>
+</div></div>
+}
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4"><div class="card border-0 shadow-sm p-3"><h6 class="fw-semibold mb-3">Placement Status</h6><canvas id="statusChart" height="220"></canvas></div></div>
+    <div class="col-md-4"><div class="card border-0 shadow-sm p-3"><h6 class="fw-semibold mb-3">Internship Status</h6><canvas id="internshipStatusChart" height="220"></canvas></div></div>
+    <div class="col-md-4"><div class="card border-0 shadow-sm p-3"><h6 class="fw-semibold mb-3">Internship Types</h6><canvas id="internshipTypeChart" height="220"></canvas></div></div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6"><div class="card border-0 shadow-sm p-3"><h6 class="fw-semibold mb-3">Top Companies — Placements</h6><canvas id="companyChart" height="200"></canvas></div></div>
+    <div class="col-md-6"><div class="card border-0 shadow-sm p-3"><h6 class="fw-semibold mb-3">Top Companies — Internships</h6><canvas id="internCompanyChart" height="200"></canvas></div></div>
+</div>
+
+<div class="card border-0 shadow-sm mb-4"><div class="card-body">
+    <h6 class="fw-semibold mb-3">Quick Links</h6>
+    <div class="d-flex flex-wrap gap-2">
+        <a asp-action="Users" class="btn btn-outline-primary btn-sm"><i class="bi bi-person-plus me-1"></i>Manage Users</a>
+        <a asp-action="Applications" class="btn btn-outline-secondary btn-sm"><i class="bi bi-briefcase me-1"></i>All Placements</a>
+        <a asp-action="Internships" class="btn btn-outline-info btn-sm"><i class="bi bi-building me-1"></i>All Internships</a>
+        <a asp-action="Companies" class="btn btn-outline-success btn-sm"><i class="bi bi-buildings me-1"></i>Companies</a>
+        <a asp-action="ExportExcel" class="btn btn-outline-warning btn-sm"><i class="bi bi-file-earmark-excel me-1"></i>Export Placements</a>
+        <a asp-action="ExportInternshipsExcel" class="btn btn-outline-warning btn-sm"><i class="bi bi-file-earmark-excel me-1"></i>Export Internships</a>
+    </div>
+</div></div>
+
+<div class="row g-4">
+<div class="col-md-6"><div class="card border-0 shadow-sm"><div class="card-body">
+    <h6 class="fw-semibold mb-3">Recent Placement Activity</h6>
+    <div class="table-responsive"><table class="table table-sm table-hover"><thead class="table-light"><tr>
+        <th>Student</th><th>Company</th><th>Status</th><th>Updated</th></tr></thead>
+    <tbody>@foreach (var r in Model.RecentActivity){
+    <tr><td>@r.StudentName</td><td>@r.CompanyName</td>
+        <td><span class="badge badge-@r.Status">@r.Status</span></td>
+        <td>@r.UpdatedAt.ToString("dd MMM, HH:mm")</td></tr>
+    }</tbody></table></div>
+</div></div></div>
+<div class="col-md-6"><div class="card border-0 shadow-sm"><div class="card-body">
+    <h6 class="fw-semibold mb-3">Recent Internship Activity</h6>
+    <div class="table-responsive"><table class="table table-sm table-hover"><thead class="table-light"><tr>
+        <th>Student</th><th>Company</th><th>Type</th><th>Status</th></tr></thead>
+    <tbody>@foreach (var r in Model.RecentInternshipActivity){
+    <tr><td>@r.StudentName</td><td>@r.CompanyName</td>
+        <td><span class="badge bg-light text-dark border">@r.InternshipType</span></td>
+        <td><span class="badge badge-@r.Status">@r.Status</span></td></tr>
+    }</tbody></table></div>
+</div></div></div>
+</div>
+
+@section Scripts {
+<script>
+const sd  = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.StatusDistribution));
+const isd = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.InternshipStatusDistribution));
+const itd = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.InternshipTypeDistribution));
+const cd  = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.TopCompanies));
+const icd = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.TopInternshipCompanies));
+const COLORS = ['#0d6efd','#6f42c1','#fd7e14','#198754','#dc3545','#20c997','#0dcaf0'];
+function doughnut(id,data){new Chart(document.getElementById(id),{type:'doughnut',data:{labels:Object.keys(data),datasets:[{data:Object.values(data),borderWidth:0,backgroundColor:COLORS}]},options:{responsive:true,plugins:{legend:{position:'bottom'}},cutout:'60%'}});}
+function hbar(id,data,color){new Chart(document.getElementById(id),{type:'bar',data:{labels:Object.keys(data),datasets:[{data:Object.values(data),backgroundColor:color,borderRadius:6}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}}}});}
+doughnut('statusChart',sd);
+doughnut('internshipStatusChart',isd);
+doughnut('internshipTypeChart',itd);
+hbar('companyChart',cd,'#0d6efd');
+hbar('internCompanyChart',icd,'#0dcaf0');
+</script>
+}
