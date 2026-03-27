@@ -1,0 +1,162 @@
+@model PlacementTracker.ViewModels.ProfileViewModel
+@{
+    ViewData["Title"] = "My Profile";
+    var nameParts = Model.FullName?.Split(' ', StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>();
+    var initials = nameParts.Length >= 2
+        ? $"{nameParts[0][0]}{nameParts[nameParts.Length - 1][0]}".ToUpper()
+        : (nameParts.Length == 1 ? nameParts[0].Substring(0, Math.Min(2, nameParts[0].Length)).ToUpper() : "?");
+}
+
+<div class="container-fluid px-0">
+    <div class="row">
+        <!-- Profile Card -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 mb-4 h-100">
+                <div class="card-body text-center p-5">
+                    <div class="position-relative d-inline-block mb-4">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 120px; height: 120px; font-size: 2.5rem; background: linear-gradient(135deg, #B91C1C, #7F1D1D); color: #fff; font-weight: 700; letter-spacing: 2px;">
+                            @initials
+                        </div>
+                        <button type="button" class="btn btn-sm btn-light border shadow-sm rounded-circle d-flex align-items-center justify-content-center" style="position: absolute; bottom: 4px; right: 4px; width: 36px; height: 36px;" title="Change Profile Picture">
+                            <i class="bi bi-camera-fill text-brand-700"></i>
+                        </button>
+                    </div>
+                    <h3 class="fw-bold mb-1">@Model.FullName</h3>
+                    <p class="text-muted small mb-4">@ViewContext.HttpContext.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Role)?.Value</p>
+                </div>
+                <div class="card-footer bg-white border-top-0 p-4">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted small">Account Status</span>
+                        <span class="badge bg-success">Active</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted small">Member Since</span>
+                        <span class="text-dark small fw-semibold">@DateTime.Now.ToString("MMM yyyy")</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Form -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-bottom-0 pb-0 pt-4 px-4">
+                    <ul class="nav nav-tabs border-0" id="profileTab" role="tablist">
+                        <li class="nav-item"><button class="nav-link active fw-bold border-0 bg-transparent text-dark" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal">Personal</button></li>
+                        @if (User.IsInRole("Student")) {
+                            <li class="nav-item"><button class="nav-link fw-bold border-0 bg-transparent text-muted" id="academic-tab" data-bs-toggle="tab" data-bs-target="#academic">Academic</button></li>
+                            <li class="nav-item"><button class="nav-link fw-bold border-0 bg-transparent text-muted" id="family-tab" data-bs-toggle="tab" data-bs-target="#family">Family & Address</button></li>
+                        }
+                    </ul>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Profile" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3 small"></div>
+                        
+                        <div class="tab-content" id="profileTabContent">
+                            <!-- Personal Tab -->
+                            <div class="tab-pane fade show active" id="personal">
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <label asp-for="FullName" class="form-label fw-semibold"></label>
+                                        <input asp-for="FullName" class="form-control" />
+                                        <span asp-validation-for="FullName" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="Email" class="form-label fw-semibold"></label>
+                                        <input asp-for="Email" class="form-control bg-light" readonly />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="Phone" class="form-label fw-semibold"></label>
+                                        <input asp-for="Phone" class="form-control" />
+                                        <span asp-validation-for="Phone" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="Department" class="form-label fw-semibold"></label>
+                                        <input asp-for="Department" class="form-control" />
+                                        <span asp-validation-for="Department" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if (User.IsInRole("Student")) {
+                                <!-- Academic Tab -->
+                                <div class="tab-pane fade" id="academic">
+                                    <div class="row g-4">
+                                        <div class="col-md-6">
+                                            <label asp-for="CollegeRollNo" class="form-label fw-semibold"></label>
+                                            <input asp-for="CollegeRollNo" class="form-control" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label asp-for="Branch" class="form-label fw-semibold"></label>
+                                            <input asp-for="Branch" class="form-control" placeholder="e.g. CE" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label asp-for="Semester" class="form-label fw-semibold"></label>
+                                            <input asp-for="Semester" class="form-control" placeholder="e.g. 7" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label asp-for="CGPA" class="form-label fw-semibold"></label>
+                                            <input asp-for="CGPA" class="form-control" type="number" step="0.01" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label asp-for="TenthPercentage" class="form-label fw-semibold"></label>
+                                            <input asp-for="TenthPercentage" class="form-control" type="number" step="0.01" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label asp-for="TwelfthPercentage" class="form-label fw-semibold"></label>
+                                            <input asp-for="TwelfthPercentage" class="form-control" type="number" step="0.01" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label asp-for="DiplomaPercentage" class="form-label fw-semibold"></label>
+                                            <input asp-for="DiplomaPercentage" class="form-control" type="number" step="0.01" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Family & Address Tab -->
+                                <div class="tab-pane fade" id="family">
+                                    <div class="row g-4">
+                                        <div class="col-md-4">
+                                            <label asp-for="ParentName" class="form-label fw-semibold"></label>
+                                            <input asp-for="ParentName" class="form-control" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label asp-for="ParentContact" class="form-label fw-semibold"></label>
+                                            <input asp-for="ParentContact" class="form-control" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label asp-for="ParentEmail" class="form-label fw-semibold"></label>
+                                            <input asp-for="ParentEmail" class="form-control" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label asp-for="CurrentAddress" class="form-label fw-semibold"></label>
+                                            <textarea asp-for="CurrentAddress" class="form-control" rows="2"></textarea>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label asp-for="City" class="form-label fw-semibold"></label>
+                                            <input asp-for="City" class="form-control" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label asp-for="State" class="form-label fw-semibold"></label>
+                                            <input asp-for="State" class="form-control" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label asp-for="Pincode" class="form-label fw-semibold"></label>
+                                            <input asp-for="Pincode" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="mt-5 pt-3 border-top d-flex justify-content-end gap-2">
+                            <button type="reset" class="btn btn-light border">Discard Changes</button>
+                            <button type="submit" class="btn btn-primary px-4 shadow-sm">Save Profile</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

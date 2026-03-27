@@ -1,0 +1,175 @@
+@model PlacementTracker.ViewModels.RegisterViewModel
+@{ Layout = null; }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Register — Trackeoo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { 50: '#fef2f2', 100: '#fee2e2', 500: '#ef4444', 600: '#dc2626', 700: '#B91C1C', 800: '#991b1b', 900: '#7F1D1D' },
+                        cream: { 50: '#FFFBF5', 100: '#FFF7ED' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style> body { font-family: 'Inter', sans-serif; background-color: #FFFBF5; } </style>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-cream-50 p-4 selection:bg-brand-200 selection:text-brand-900">
+
+<div class="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100 flex flex-col lg:flex-row">
+    
+    <!-- Sidebar / Graphic -->
+    <div class="lg:w-4/12 bg-gradient-to-br from-brand-900 to-brand-700 p-8 lg:p-10 text-white relative overflow-hidden flex flex-col justify-between hidden lg:flex">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
+        <div class="relative z-10">
+            <a href="/" class="flex items-center gap-2 mb-12">
+                <i class="bi bi-mortarboard-fill text-2xl"></i>
+                <span class="text-xl font-extrabold tracking-tight">Trackeoo</span>
+            </a>
+            <h2 class="text-3xl font-extrabold leading-tight mb-4">Start your placement journey.</h2>
+            <p class="text-brand-100/80 leading-relaxed text-sm">Join Trackeoo to track your job and internship applications seamlessly.</p>
+        </div>
+        <div class="relative z-10 mt-8 space-y-3 text-sm text-brand-100/80">
+            <div class="flex items-center gap-3"><i class="bi bi-check-circle-fill text-brand-300"></i> Track applications in real-time</div>
+            <div class="flex items-center gap-3"><i class="bi bi-check-circle-fill text-brand-300"></i> Get notified for every status change</div>
+            <div class="flex items-center gap-3"><i class="bi bi-check-circle-fill text-brand-300"></i> Discover job & internship opportunities</div>
+        </div>
+        <div class="relative z-10 text-xs text-brand-200/60 font-semibold tracking-wide flex items-center gap-2 mt-8">
+            <i class="bi bi-shield-check text-lg"></i> Secure Registration
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="lg:w-8/12 p-6 sm:p-8 lg:p-10">
+        <!-- Mobile Logo -->
+        <div class="lg:hidden flex items-center gap-2 mb-6 text-brand-700">
+            <i class="bi bi-mortarboard-fill text-2xl"></i>
+            <span class="text-xl font-extrabold tracking-tight">Trackeoo</span>
+        </div>
+
+        <h3 class="text-2xl font-bold text-gray-900 mb-1">Create Account</h3>
+        <p class="text-gray-500 text-sm mb-6">Fill in your details to get started.</p>
+
+        <form asp-action="Register" method="post">
+            <div asp-validation-summary="All" class="text-brand-600 text-sm font-medium mb-4"></div>
+
+            <!-- Row 1: Name & Email -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label asp-for="FullName" class="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
+                    <input asp-for="FullName" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none bg-gray-50 focus:bg-white transition-all text-sm" placeholder="John Doe"/>
+                </div>
+                <div>
+                    <label asp-for="Email" class="block text-sm font-semibold text-gray-700 mb-1">Email Address *</label>
+                    <input asp-for="Email" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none bg-gray-50 focus:bg-white transition-all text-sm" placeholder="john@example.com"/>
+                </div>
+            </div>
+
+            <!-- Row 2: Password & Confirm -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label asp-for="Password" class="block text-sm font-semibold text-gray-700 mb-1">Password *</label>
+                    <div class="relative">
+                        <input asp-for="Password" id="regPassword" type="password" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none bg-gray-50 focus:bg-white transition-all text-sm pr-10" placeholder="Min 6 characters"/>
+                        <button type="button" onclick="togglePassword('regPassword', 'eyeIconReg')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-brand-600">
+                            <i id="eyeIconReg" class="bi bi-eye-fill"></i>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label asp-for="ConfirmPassword" class="block text-sm font-semibold text-gray-700 mb-1">Confirm Password *</label>
+                    <div class="relative">
+                        <input asp-for="ConfirmPassword" id="regConfirmPassword" type="password" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none bg-gray-50 focus:bg-white transition-all text-sm pr-10" placeholder="Re-enter password"/>
+                        <button type="button" onclick="togglePassword('regConfirmPassword', 'eyeIconConfirm')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-brand-600">
+                            <i id="eyeIconConfirm" class="bi bi-eye-fill"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 3: Role, Department, Roll No, Phone -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+                <div>
+                    <label asp-for="Role" class="block text-sm font-semibold text-gray-700 mb-1">I am a *</label>
+                    <select asp-for="Role" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none bg-gray-50 focus:bg-white transition-all text-sm" onchange="toggleStudentFields(this.value)">
+                        <option value="Student">Student</option>
+                        <option value="Recruiter">Recruiter</option>
+                    </select>
+                </div>
+                <div class="student-field">
+                    <label asp-for="Department" class="block text-sm font-semibold text-gray-700 mb-1">Department *</label>
+                    <select asp-for="Department" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none bg-gray-50 focus:bg-white transition-all text-sm">
+                        <option value="">Select...</option>
+                        <option>Computer Science</option>
+                        <option>Information Tech</option>
+                        <option>Electronics</option>
+                        <option>Mechanical</option>
+                        <option>Civil</option>
+                        <option>MBA</option>
+                    </select>
+                </div>
+                <div class="student-field" id="rollNoDiv">
+                    <label asp-for="CollegeRollNo" class="block text-sm font-semibold text-gray-700 mb-1">Roll No.</label>
+                    <input asp-for="CollegeRollNo" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none bg-gray-50 focus:bg-white transition-all text-sm" placeholder="CS2021001"/>
+                </div>
+                <div>
+                    <label asp-for="Phone" class="block text-sm font-semibold text-gray-700 mb-1">Phone</label>
+                    <input asp-for="Phone" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none bg-gray-50 focus:bg-white transition-all text-sm" placeholder="+91 ..."/>
+                </div>
+            </div>
+
+            <!-- Row 4: Branch & Semester (Student only) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 student-field" id="branchSemRow">
+                <div>
+                    <label asp-for="Branch" class="block text-sm font-semibold text-gray-700 mb-1">Branch</label>
+                    <input asp-for="Branch" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none bg-gray-50 focus:bg-white transition-all text-sm" placeholder="e.g. CE, IT, ME"/>
+                </div>
+                <div>
+                    <label asp-for="Semester" class="block text-sm font-semibold text-gray-700 mb-1">Semester</label>
+                    <input asp-for="Semester" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none bg-gray-50 focus:bg-white transition-all text-sm" placeholder="e.g. 8"/>
+                </div>
+            </div>
+
+            <button type="submit" class="w-full py-3 bg-brand-700 hover:bg-brand-800 text-white font-bold rounded-xl transition-all shadow-lg shadow-brand-700/30 flex items-center justify-center gap-2">
+                Complete Registration <i class="bi bi-arrow-right"></i>
+            </button>
+        </form>
+
+        <div class="mt-6 text-center">
+            <p class="text-gray-600 text-sm">Already have an account? <a asp-action="Login" class="text-brand-600 font-bold hover:text-brand-800 transition-colors">Sign in here</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleStudentFields(role) {
+        document.querySelectorAll('.student-field').forEach(el => {
+            el.style.display = role === 'Recruiter' ? 'none' : '';
+        });
+    }
+
+    function togglePassword(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.replace('bi-eye-fill', 'bi-eye-slash-fill');
+        } else {
+            input.type = 'password';
+            icon.classList.replace('bi-eye-slash-fill', 'bi-eye-fill');
+        }
+    }
+</script>
+
+</body>
+</html>
