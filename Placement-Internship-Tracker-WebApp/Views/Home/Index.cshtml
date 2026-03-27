@@ -1,0 +1,211 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Placement Tracker | RK University</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-red-600">RKU Tracker</h1>
+
+            <ul class="hidden md:flex space-x-6 text-gray-700">
+                <li>Home</li>
+                <li>Features</li>
+                <li>Dashboard</li>
+                <li>Contact</li>
+            </ul>
+
+            <div>
+                <button class="border px-4 py-1 text-red-500 border-red-500 rounded mr-2">Login</button>
+                <button class="bg-red-500 text-white px-4 py-1 rounded">Register</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
+
+            <div>
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">
+                    Placement & Internship Tracker
+                </h1>
+                <p class="text-gray-600 mb-6">
+                    Manage all your job and internship applications in one place.
+                    Track status, schedule interviews, and stay ahead in your placement journey.
+                </p>
+
+                <button class="bg-red-500 text-white px-6 py-3 rounded-lg shadow hover:bg-red-600">
+                    Get Started →
+                </button>
+            </div>
+
+            <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0"
+                 class="rounded-xl shadow">
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="py-12 bg-gray-100">
+        <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+
+            <div class="bg-white p-6 rounded shadow">
+                <h2 class="text-2xl font-bold text-red-500">100+</h2>
+                <p>Applications Tracked</p>
+            </div>
+
+            <div class="bg-white p-6 rounded shadow">
+                <h2 class="text-2xl font-bold text-red-500">50+</h2>
+                <p>Companies</p>
+            </div>
+
+            <div class="bg-white p-6 rounded shadow">
+                <h2 class="text-2xl font-bold text-red-500">30+</h2>
+                <p>Interviews</p>
+            </div>
+
+            <div class="bg-white p-6 rounded shadow">
+                <h2 class="text-2xl font-bold text-red-500">90%</h2>
+                <p>Success Rate</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-16 bg-white">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+
+            <h2 class="text-2xl font-bold mb-10">Core Features</h2>
+
+            <div class="grid md:grid-cols-3 gap-8">
+
+                <div class="p-6 border rounded-lg">
+                    <h3 class="font-bold mb-2 text-red-500">Application Tracking</h3>
+                    <p class="text-gray-600">
+                        Keep track of all internship and job applications in one dashboard.
+                    </p>
+                </div>
+
+                <div class="p-6 border rounded-lg">
+                    <h3 class="font-bold mb-2 text-red-500">Status Flow</h3>
+                    <p class="text-gray-600">
+                        Easily update status: Applied → Shortlisted → Interview → Selected.
+                    </p>
+                </div>
+
+                <div class="p-6 border rounded-lg">
+                    <h3 class="font-bold mb-2 text-red-500">Interview Scheduling</h3>
+                    <p class="text-gray-600">
+                        Manage interview dates and reminders effectively.
+                    </p>
+                </div>
+
+                <div class="p-6 border rounded-lg">
+                    <h3 class="font-bold mb-2 text-red-500">Notes & Follow-ups</h3>
+                    <p class="text-gray-600">
+                        Add personal notes and track follow-ups for each application.
+                    </p>
+                </div>
+
+                <div class="p-6 border rounded-lg">
+                    <h3 class="font-bold mb-2 text-red-500">Filters & Search</h3>
+                    <p class="text-gray-600">
+                        Filter by company, status, or date quickly.
+                    </p>
+                </div>
+
+                <div class="p-6 border rounded-lg">
+                    <h3 class="font-bold mb-2 text-red-500">Analytics Dashboard</h3>
+                    <p class="text-gray-600">
+                        View summaries and insights of your placement progress.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Section -->
+    <section class="bg-red-500 text-white py-12">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+
+            <h2 class="text-xl font-bold mb-8">Application Workflow</h2>
+
+            <div class="grid md:grid-cols-5 gap-6">
+
+                <div>Applied</div>
+                <div>Shortlisted</div>
+                <div>Interview</div>
+                <div>Offer</div>
+                <div>Selected</div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Preview -->
+    <section class="py-16 bg-gray-100 text-center">
+        <h2 class="text-2xl font-bold mb-8">Dashboard Preview</h2>
+
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71"
+             class="mx-auto rounded shadow-lg w-[80%]">
+    </section>
+
+    <!-- CTA -->
+    <section class="py-16 bg-white text-center">
+        <h2 class="text-2xl font-bold mb-4">Start Managing Your Placement Journey Today</h2>
+        <button class="bg-red-500 text-white px-6 py-3 rounded-lg">
+            Go to Dashboard
+        </button>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-10">
+        <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-6">
+
+            <div>
+                <h3 class="font-bold mb-2">RK University</h3>
+                <p class="text-sm">Placement & Internship Tracker System</p>
+            </div>
+
+            <div>
+                <h3 class="font-bold mb-2">Quick Links</h3>
+                <ul class="text-sm">
+                    <li>Dashboard</li>
+                    <li>Applications</li>
+                    <li>Reports</li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="font-bold mb-2">Contact</h3>
+                <p>tpo@rku.ac.in</p>
+            </div>
+
+        </div>
+
+        <p class="text-center text-gray-400 mt-6 text-sm">
+            © 2026 RK University
+        </p>
+    </footer>
+
+</body>
+</html>
