@@ -1,0 +1,82 @@
+@using PlacementTracker.Models
+@{ ViewData["Title"] = "Student Details";
+    var student = ViewBag.Student as ApplicationUser;
+    var placements = ViewBag.Placements as List<JobApplication> ?? new();
+    var internships = ViewBag.Internships as List<InternshipApplication> ?? new();
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div><h5 class="fw-bold mb-0">@student?.FullName</h5>
+        <small class="text-muted">@student?.Department · @student?.CollegeRollNo</small></div>
+    <a asp-action="Index" class="btn btn-sm btn-outline-secondary">← Back</a>
+</div>
+
+<!-- Placements -->
+<h6 class="fw-semibold mb-2"><i class="bi bi-briefcase text-primary me-2"></i>Placements (@placements.Count)</h6>
+<div class="card border-0 shadow-sm mb-4"><div class="table-responsive">
+<table class="table table-sm mb-0">
+    <thead class="table-light"><tr><th>Company</th><th>Role</th><th>Status</th><th>Applied</th><th>Rounds</th></tr></thead>
+    <tbody>@foreach (var a in placements){
+    <tr><td class="fw-semibold">@a.CompanyName</td><td class="small">@a.Role</td>
+        <td><span class="badge badge-@a.Status">@a.Status</span></td>
+        <td class="small text-muted">@a.AppliedDate.ToString("dd MMM")</td>
+        <td>@a.Interviews.Count</td></tr>
+    }</tbody>
+</table></div></div>
+
+<!-- Internships -->
+<h6 class="fw-semibold mb-2"><i class="bi bi-building text-info me-2"></i>Internships (@internships.Count)</h6>
+<div class="card border-0 shadow-sm mb-4"><div class="table-responsive">
+<table class="table table-sm mb-0">
+    <thead class="table-light"><tr><th>Company</th><th>Role</th><th>Type</th><th>Status</th><th>FTO</th></tr></thead>
+    <tbody>@foreach (var a in internships){
+    <tr><td class="fw-semibold">@a.CompanyName</td><td class="small">@a.Role</td>
+        <td><span class="badge bg-light text-dark border">@a.InternshipType</span></td>
+        <td><span class="badge badge-@a.Status">@a.Status</span></td>
+        <td>@if(a.IsFullTimeOffered){<span class="badge badge-fto"><i class="bi bi-star-fill"></i></span>}else{<span class="text-muted">—</span>}</td></tr>
+    }</tbody>
+</table></div></div>
+
+<!-- Add Remark -->
+<div class="card border-0 shadow-sm"><div class="card-body">
+<h6 class="fw-semibold mb-3"><i class="bi bi-chat-quote text-warning me-2"></i>Add Remark</h6>
+<form asp-action="AddRemark" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="studentId" value="@student?.Id"/>
+    <div class="row g-2 mb-2">
+        <div class="col-md-4">
+            <select name="appId" class="form-select form-select-sm">
+                <option value="">— Select Placement —</option>
+                @foreach (var a in placements){ <option value="@a.Id">@a.CompanyName — @a.Role</option> }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select name="internshipId" class="form-select form-select-sm">
+                <option value="">— Select Internship —</option>
+                @foreach (var a in internships){ <option value="@a.Id">@a.CompanyName — @a.Role</option> }
+            </select>
+        </div>
+    </div>
+    <div class="input-group">
+        <input name="comment" class="form-control" placeholder="Write your remark..." required/>
+        <button type="submit" class="btn btn-warning"><i class="bi bi-send"></i></button>
+    </div>
+</form>
+
+@{
+    var allRemarks = placements.SelectMany(a => a.Remarks)
+        .Concat(internships.SelectMany(a => a.Remarks))
+        .OrderByDescending(r => r.CreatedAt).ToList();
+}
+@if (allRemarks.Any()){
+<hr/>
+<h6 class="fw-semibold small">Previous Remarks</h6>
+<ul class="list-group list-group-flush">
+@foreach (var r in allRemarks){
+<li class="list-group-item px-0">
+    <div class="fw-semibold small">@r.Faculty?.FullName</div>
+    <div class="small">@r.Comment</div>
+    <small class="text-muted">@r.CreatedAt.ToString("dd MMM, HH:mm")</small>
+</li>
+}
+</ul>}
+</div></div>

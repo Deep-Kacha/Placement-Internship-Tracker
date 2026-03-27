@@ -8,10 +8,6 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
 html {
   position: relative;
   min-height: 100%;
@@ -19,4 +15,117 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+/* Trackeoo Theme Overrides */
+:root {
+    --bs-primary-rgb: 185, 28, 28;
+    --bs-secondary-rgb: 255, 247, 237;
+    --bs-body-font-family: 'Inter', sans-serif;
+    --bs-border-radius: 6px;
+    --bs-border-radius-sm: 4px;
+    --bs-border-radius-lg: 10px;
+    --bs-border-color: #E5E7EB;
+    --bs-body-bg: #FFFBF5;
+    --bs-body-color: #1F2937;
+}
+
+.text-primary { color: #B91C1C !important; }
+.bg-primary { background-color: #B91C1C !important; color: #FFFFFF !important; }
+.text-muted { color: #6B7280 !important; }
+
+/* Primary Button Override */
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #B91C1C;
+    --bs-btn-border-color: #B91C1C;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #7F1D1D;
+    --bs-btn-hover-border-color: #7F1D1D;
+    --bs-btn-focus-shadow-rgb: 185, 28, 28;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #7F1D1D;
+    --bs-btn-active-border-color: #7F1D1D;
+}
+
+/* Outline Primary Button Override */
+.btn-outline-primary {
+    --bs-btn-color: #B91C1C;
+    --bs-btn-border-color: #B91C1C;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #B91C1C;
+    --bs-btn-hover-border-color: #B91C1C;
+    --bs-btn-focus-shadow-rgb: 185, 28, 28;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #B91C1C;
+    --bs-btn-active-border-color: #B91C1C;
+}
+
+/* Base Form & Layout Enhancements */
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem rgba(185, 28, 28, 0.25);
+  border-color: #EF4444;
+}
+
+.form-control, .form-select {
+    border-radius: 6px;
+    border-color: #E5E7EB;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #EF4444;
+    box-shadow: 0 0 0 0.25rem rgba(185, 28, 28, 0.15);
+}
+
+.badge {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+}
+
+.table {
+    --bs-table-color: #1F2937;
+    --bs-table-border-color: #E5E7EB;
+    vertical-align: middle;
+}
+.table-light {
+    --bs-table-bg: #FFF7ED;
+    --bs-table-color: #1F2937;
+    border-bottom: 2px solid #E5E7EB;
+}
+
+.text-bg-primary {
+    background-color: #B91C1C !important;
+    color: #fff !important;
+}
+
+/* Drop shadow for headers and components */
+.shadow-sm {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+}
+
+a {
+    color: #B91C1C;
+    text-decoration: none;
+}
+a:hover {
+    color: #7F1D1D;
+    text-decoration: underline;
+}
+
+.modal-content {
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+.modal-header {
+    border-bottom-color: #E5E7EB;
+}
+.modal-footer {
+    border-top-color: #E5E7EB;
 }

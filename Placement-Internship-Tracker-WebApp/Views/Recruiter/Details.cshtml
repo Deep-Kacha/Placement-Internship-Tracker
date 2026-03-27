@@ -1,0 +1,83 @@
+@model PlacementTracker.Models.JobDescription
+@{ ViewData["Title"] = "Job Details"; }
+
+<div class="mb-4">
+    <a asp-action="Index" class="text-decoration-none text-muted small"><i class="bi bi-arrow-left me-1"></i>Back to Postings</a>
+</div>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+                <h4 class="fw-bold mb-1">@Model.Title</h4>
+                <div class="text-muted"><i class="bi bi-building me-2"></i>@Model.CompanyName</div>
+            </div>
+            <span class="badge bg-@(Model.Status == "Approved" ? "success" : Model.Status == "Rejected" ? "danger" : "warning text-dark") fs-6 px-3 py-2">
+                @Model.Status
+            </span>
+        </div>
+        <div class="row g-4 mt-2">
+            <div class="col-sm-3">
+                <div class="text-muted small text-uppercase fw-bold mb-1">Type</div>
+                <div class="fw-medium">@Model.JobType</div>
+            </div>
+            <div class="col-sm-3">
+                <div class="text-muted small text-uppercase fw-bold mb-1">Deadline</div>
+                <div class="fw-medium">@Model.Deadline.ToString("dd MMM yyyy")</div>
+            </div>
+            <div class="col-sm-3">
+                <div class="text-muted small text-uppercase fw-bold mb-1">Location</div>
+                <div class="fw-medium">@(Model.Location ?? "Not Specified")</div>
+            </div>
+            <div class="col-sm-3">
+                <div class="text-muted small text-uppercase fw-bold mb-1">Compensation</div>
+                <div class="fw-medium">@(Model.PackageOrStipend ?? "Not Specified")</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h5 class="fw-bold mb-3 mt-5">Applicants</h5>
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light text-muted small text-uppercase">
+                    <tr>
+                        <th class="ps-4">Student Name</th>
+                        <th>Roll No</th>
+                        <th>Department</th>
+                        <th>Applied On</th>
+                        <th>Admin Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ 
+                        var applicants = Model.JobType == "Internship" 
+                            ? Model.InternshipApplications.Select(a => new { a.Student, a.AppliedDate, a.Status }).ToList()
+                            : Model.JobApplications.Select(a => new { a.Student, a.AppliedDate, a.Status }).ToList();
+                    }
+                    @if(!applicants.Any()) {
+                        <tr><td colspan="5" class="text-center py-5 text-muted">No applicants yet.</td></tr>
+                    }
+                    @foreach (var app in applicants) {
+                        <tr>
+                            <td class="ps-4 fw-semibold">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold" style="width:32px;height:32px;">
+                                        @app.Student?.FullName?.Substring(0, 1)
+                                    </div>
+                                    @app.Student?.FullName
+                                </div>
+                            </td>
+                            <td><code>@app.Student?.CollegeRollNo</code></td>
+                            <td>@app.Student?.Department</td>
+                            <td>@app.AppliedDate.ToString("dd MMM yyyy")</td>
+                            <td><span class="badge badge-@app.Status.Replace(" ", "-")">@app.Status</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
