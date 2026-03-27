@@ -24,7 +24,7 @@ namespace PlacementTracker.Controllers
             ViewBag.TotalPlacements   = await _db.JobApplications.CountAsync(a => a.IsActive);
             ViewBag.TotalInternships  = await _db.InternshipApplications.CountAsync(a => a.IsActive);
             ViewBag.TotalOffers       = await _db.JobApplications.CountAsync(a => a.Status == "Offer" && a.IsActive);
-            ViewBag.TotalPPO          = await _db.InternshipApplications.CountAsync(a => a.IsPPOConverted && a.IsActive);
+            ViewBag.TotalFTO          = await _db.InternshipApplications.CountAsync(a => a.IsFullTimeOffered && a.IsActive);
             ViewBag.TotalCompanies    = await _db.Companies.CountAsync(c => c.IsActive);
             ViewBag.AllUsers          = await _db.Users.OrderBy(u => u.FullName).ToListAsync();
             return View();

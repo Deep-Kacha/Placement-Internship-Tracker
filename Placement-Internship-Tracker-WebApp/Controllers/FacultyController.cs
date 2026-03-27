@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using PlacementTracker.Data;
 using PlacementTracker.Models;
 using PlacementTracker.ViewModels;
+using PlacementTracker.Services;
 
 namespace PlacementTracker.Controllers
 {
@@ -13,9 +14,10 @@ namespace PlacementTracker.Controllers
     {
         private readonly AppDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly NotificationService _notificationSvc;
 
-        public FacultyController(AppDbContext db, UserManager<ApplicationUser> u)
-        { _db = db; _userManager = u; }
+        public FacultyController(AppDbContext db, UserManager<ApplicationUser> u, NotificationService n)
+        { _db = db; _userManager = u; _notificationSvc = n; }
 
         private async Task<string> GetFacultyId()
             => (await _userManager.GetUserAsync(User))!.Id;
@@ -47,7 +49,7 @@ namespace PlacementTracker.Controllers
                                              .FirstOrDefault()?.Status ?? "—",
                     TotalInternships    = interns.Count,
                     InternshipSelected  = interns.Count(a => a.Status == "Selected" || a.Status == "Completed"),
-                    HasPPO              = interns.Any(a => a.IsPPOConverted),
+                    HasFullTimeOffer     = interns.Any(a => a.IsFullTimeOffered),
                     HasOngoingInternship = interns.Any(a => a.IsOngoing)
                 });
             }
@@ -73,7 +75,7 @@ namespace PlacementTracker.Controllers
                 TotalOffers                = items.Sum(i => i.Offers),
                 TotalInternships           = items.Sum(i => i.TotalInternships),
                 TotalInternshipSelected    = items.Sum(i => i.InternshipSelected),
-                TotalPPOConverted          = items.Count(i => i.HasPPO)
+                TotalFullTimeOffered       = items.Count(i => i.HasFullTimeOffer)
             });
         }
 
@@ -112,6 +114,10 @@ namespace PlacementTracker.Controllers
                 Comment                = comment
             });
             await _db.SaveChangesAsync();
+            
+            var faculty = await _userManager.GetUserAsync(User);
+            await _notificationSvc.SendAsync(studentId, $"Faculty {faculty?.FullName} added a remark on your application.");
+            
             TempData["Success"] = "Remark added!";
             return RedirectToAction(nameof(StudentDetails), new { studentId });
         }

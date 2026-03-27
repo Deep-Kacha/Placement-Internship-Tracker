@@ -163,6 +163,15 @@ namespace PlacementTracker.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Branch")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("CGPA")
+                        .HasColumnType("float");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CollegeRollNo")
                         .HasColumnType("nvarchar(max)");
 
@@ -173,8 +182,14 @@ namespace PlacementTracker.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CurrentAddress")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Department")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("DiplomaPercentage")
+                        .HasColumnType("float");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -207,7 +222,19 @@ namespace PlacementTracker.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("ParentEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ParentMobile")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ParentName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PermanentAddress")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
@@ -219,8 +246,23 @@ namespace PlacementTracker.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Pincode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Semester")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("TenthPercentage")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("TwelfthPercentage")
+                        .HasColumnType("float");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -372,6 +414,9 @@ namespace PlacementTracker.Migrations
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("FullTimePackage")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("InternshipType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -379,7 +424,7 @@ namespace PlacementTracker.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsPPOConverted")
+                    b.Property<bool>("IsFullTimeOffered")
                         .HasColumnType("bit");
 
                     b.Property<int?>("JobDescriptionId")
@@ -392,9 +437,6 @@ namespace PlacementTracker.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PPOPackage")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
@@ -588,12 +630,43 @@ namespace PlacementTracker.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AdditionalDetails")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AnnualCTC")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Bond")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CampusDriveDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("CompanyName")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<string>("CompanyWebsite")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("ContactEmail")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ContactMobile")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ContactName")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
                     b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateOfJoining")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Deadline")
@@ -602,6 +675,19 @@ namespace PlacementTracker.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DocumentsPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EligibleBatches")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EligibleCourses")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InternshipDuration")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -619,12 +705,22 @@ namespace PlacementTracker.Migrations
                     b.Property<string>("RecruiterId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("RegistrationLink")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Requirements")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SelectionProcess")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Stipend")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Title")
                         .IsRequired()

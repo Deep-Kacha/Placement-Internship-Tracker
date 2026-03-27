@@ -16,10 +16,11 @@ namespace PlacementTracker.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly AnalyticsService _analytics;
         private readonly InternshipService _internshipSvc;
+        private readonly NotificationService _notificationSvc;
 
         public AdminController(AppDbContext db,
-            UserManager<ApplicationUser> u, AnalyticsService a, InternshipService i)
-        { _db = db; _userManager = u; _analytics = a; _internshipSvc = i; }
+            UserManager<ApplicationUser> u, AnalyticsService a, InternshipService i, NotificationService n)
+        { _db = db; _userManager = u; _analytics = a; _internshipSvc = i; _notificationSvc = n; }
 
         public async Task<IActionResult> Index()
             => View(await _analytics.GetAdminDashboardAsync());
@@ -64,7 +65,7 @@ namespace PlacementTracker.Controllers
             var ws = wb.Worksheets.Add("All Internships");
             string[] headers = {
                 "Student","Roll No","Department","Company","Role",
-                "Type","Mode","Status","Stipend","PPO","PPO Package",
+                "Type","Mode","Status","Stipend","Full-time Offered","FTO Package",
                 "Certificate","Start Date","End Date"
             };
             for (int i = 0; i < headers.Length; i++) ws.Cell(1, i+1).Value = headers[i];
@@ -80,8 +81,8 @@ namespace PlacementTracker.Controllers
                 ws.Cell(row, 7).Value  = a.WorkMode;
                 ws.Cell(row, 8).Value  = a.Status;
                 ws.Cell(row, 9).Value  = a.Stipend != null ? $"₹{a.Stipend}" : "-";
-                ws.Cell(row,10).Value  = a.IsPPOConverted ? "Yes" : "No";
-                ws.Cell(row,11).Value  = a.PPOPackage ?? "-";
+                ws.Cell(row,10).Value  = a.IsFullTimeOffered ? "Yes" : "No";
+                ws.Cell(row,11).Value  = a.FullTimePackage ?? "-";
                 ws.Cell(row,12).Value  = a.CertificateReceived ? "Yes" : "No";
                 ws.Cell(row,13).Value  = a.StartDate?.ToString("dd-MM-yyyy") ?? "-";
                 ws.Cell(row,14).Value  = a.EndDate?.ToString("dd-MM-yyyy") ?? "-";
@@ -110,6 +111,7 @@ namespace PlacementTracker.Controllers
             if(user != null) {
                 user.IsApproved = true;
                 await _userManager.UpdateAsync(user);
+                await _notificationSvc.SendAsync(user.Id, "Congratulations! Your account has been approved by the Administrator.");
                 TempData["Success"] = "Student approved!";
             }
             return RedirectToAction(nameof(Users));
@@ -274,7 +276,10 @@ namespace PlacementTracker.Controllers
                 var apps = await _db.InternshipApplications
                     .Where(a => a.JobDescriptionId == jdId && studentIds.Contains(a.StudentId))
                     .ToListAsync();
-                foreach(var a in apps) a.Status = newStatus;
+                foreach(var a in apps) {
+                    a.Status = newStatus;
+                    await _notificationSvc.SendAsync(a.StudentId, $"Update: Your internship status for {jd.CompanyName} - {jd.Title} has been changed to {newStatus}.", $"/Internships/Details/{a.Id}");
+                }
             }
             else
             {
@@ -283,7 +288,10 @@ namespace PlacementTracker.Controllers
                     .ToListAsync();
 
                 // Placement Rule: If Selected, lock this student from others if needed (logic can be added here)
-                foreach(var a in apps) a.Status = newStatus;
+                foreach(var a in apps) {
+                    a.Status = newStatus;
+                    await _notificationSvc.SendAsync(a.StudentId, $"Update: Your application status for {jd.CompanyName} - {jd.Title} has been changed to {newStatus}.", $"/Applications/Details/{a.Id}");
+                }
             }
 
             await _db.SaveChangesAsync();

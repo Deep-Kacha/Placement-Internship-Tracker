@@ -13,9 +13,10 @@ namespace PlacementTracker.Controllers
     {
         private readonly ApplicationService _svc;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly NotificationService _notificationSvc;
 
-        public ApplicationsController(ApplicationService s, UserManager<ApplicationUser> u)
-        { _svc = s; _userManager = u; }
+        public ApplicationsController(ApplicationService s, UserManager<ApplicationUser> u, NotificationService n)
+        { _svc = s; _userManager = u; _notificationSvc = n; }
 
         private async Task<string> GetUserId()
             => (await _userManager.GetUserAsync(User))!.Id;
@@ -84,7 +85,10 @@ namespace PlacementTracker.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateStatus(int id, string status)
         {
-            await _svc.UpdateStatusAsync(id, await GetUserId(), status);
+            var userId = await GetUserId();
+            await _svc.UpdateStatusAsync(id, userId, status);
+            var app = await _svc.GetByIdAsync(id);
+            await _notificationSvc.SendAsync(userId, $"Update: Your application status for {app?.CompanyName} has been changed to {status}.");
             TempData["Success"] = $"Status updated to {status}.";
             return RedirectToAction(nameof(Index));
         }
