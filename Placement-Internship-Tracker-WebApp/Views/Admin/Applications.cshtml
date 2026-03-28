@@ -4,15 +4,57 @@
     <h5 class="fw-bold mb-0"><i class="bi bi-briefcase me-2"></i>All Placement Applications</h5>
     <a asp-action="ExportExcel" class="btn btn-outline-success btn-sm"><i class="bi bi-file-earmark-excel me-1"></i>Export</a>
 </div>
+
+<div class="card border-0 shadow-sm mb-3">
+    <div class="card-body py-2">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-auto">
+                <select name="status" class="form-select form-select-sm">
+                    <option value="">All Status</option>
+                    @foreach (var s in ViewBag.StatusList as List<string> ?? new())
+                    {
+                        if (Context.Request.Query["status"] == s) { <option value="@s" selected>@s</option> }
+                        else { <option value="@s">@s</option> }
+                    }
+                </select>
+            </div>
+            <div class="col-auto">
+                <select name="department" class="form-select form-select-sm">
+                    <option value="">All Departments</option>
+                    @foreach (var d in ViewBag.Departments as List<string> ?? new())
+                    {
+                        if (Context.Request.Query["department"] == d) { <option value="@d" selected>@d</option> }
+                        else { <option value="@d">@d</option> }
+                    }
+                </select>
+            </div>
+            <div class="col-auto">
+                <input name="company" class="form-control form-control-sm" placeholder="Search Company..." value="@Context.Request.Query["company"]" />
+            </div>
+            <div class="col-auto d-flex gap-1">
+                <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-funnel me-1"></i>Filter</button>
+                <a asp-action="Applications" class="btn btn-outline-secondary btn-sm">Clear</a>
+            </div>
+        </form>
+    </div>
+</div>
 <div class="card border-0 shadow-sm"><div class="table-responsive">
 <table class="table table-hover table-sm mb-0">
-    <thead class="table-light"><tr><th>Student</th><th>Dept</th><th>Company</th><th>Role</th><th>Status</th><th>Package</th><th>Updated</th></tr></thead>
+    <thead class="table-light"><tr><th>Student</th><th>Dept</th><th>Company</th><th>Role</th><th>Status</th><th>Package</th><th>Updated</th><th>Resume</th></tr></thead>
     <tbody>@foreach (var a in Model){
     <tr><td class="fw-semibold small">@a.Student?.FullName</td>
         <td class="small text-muted">@a.Student?.Department</td>
         <td>@a.CompanyName</td><td class="small">@a.Role</td>
-        <td><span class="badge badge-@a.Status">@a.Status</span></td>
+        <td><span class="badge badge-@a.Status">@a.Status</span>
+            @if(a.Status == "Selected") { <span class="badge bg-success ms-1"><i class="bi bi-lock-fill me-1"></i>Placed ✓</span> }
+        </td>
         <td class="small">@(a.Package ?? "—")</td>
-        <td class="small text-muted">@a.UpdatedAt.ToString("dd MMM")</td></tr>
+        <td class="small text-muted">@a.UpdatedAt.ToString("dd MMM")</td>
+        <td>
+            @if (!string.IsNullOrEmpty(a.Student?.ResumePath)) {
+                <a asp-controller="Account" asp-action="DownloadResume" asp-route-id="@a.Student?.Id" class="btn btn-sm btn-outline-primary py-0 px-2" title="Download"><i class="bi bi-file-earmark-pdf"></i></a>
+            } else { <span class="text-muted small">—</span> }
+        </td>
+    </tr>
     }</tbody>
 </table></div></div>

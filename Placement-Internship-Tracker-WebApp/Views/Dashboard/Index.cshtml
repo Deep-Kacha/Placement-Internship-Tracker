@@ -1,7 +1,27 @@
 @model PlacementTracker.ViewModels.DashboardViewModel
-@{ ViewData["Title"] = "Dashboard"; }
+@{ ViewData["Title"] = "Dashboard";
+   bool isLocked = ViewBag.IsPlacementLocked ?? false;
+   string? selectedCompany = ViewBag.SelectedCompany;
+}
 
 <h4 class="fw-bold mb-4"><i class="bi bi-speedometer2 me-2"></i>Student Dashboard</h4>
+
+@if (isLocked) {
+<div class="alert border-0 shadow-sm mb-4 p-4" style="background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);">
+    <div class="d-flex align-items-center">
+        <div class="me-3">
+            <div class="bg-success bg-opacity-25 rounded-circle p-3 d-inline-flex">
+                <i class="bi bi-trophy-fill text-success fs-3"></i>
+            </div>
+        </div>
+        <div>
+            <h5 class="fw-bold text-success mb-1">🎉 Congratulations! You've Been Placed!</h5>
+            <p class="mb-0 text-dark">You have been <strong>selected</strong> at <strong>@selectedCompany</strong>. Your application portal is now <strong>locked</strong>.</p>
+            <small class="text-muted"><i class="bi bi-shield-lock me-1"></i>New applications are disabled.</small>
+        </div>
+    </div>
+</div>
+}
 
 <!-- Placement KPIs -->
 <p class="text-uppercase text-muted small fw-semibold mb-1" style="letter-spacing:1px;">
