@@ -1,3 +1,4 @@
+@model PlacementTracker.ViewModels.LandingPageViewModel
 @{
     Layout = null;
 }
@@ -70,7 +71,7 @@
 
             <div class="flex items-center gap-4">
                 <a href="/Account/Login" class="text-gray-700 font-medium hover:text-brand-700 hidden sm:block transition">Log in</a>
-                <a href="/Account/Login" class="bg-gray-900 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-brand-700 transition shadow-lg shadow-gray-900/20">
+                <a href="/Account/Register" class="bg-gray-900 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-brand-700 transition shadow-lg shadow-gray-900/20">
                     Get Started
                 </a>
             </div>
@@ -93,7 +94,7 @@
                     Trackeoo helps synchronize students, faculty, and recruiters. Get real-time updates on applications, interviews, and offers in one unified platform.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="/Account/Login" class="bg-brand-700 text-white px-8 py-3.5 rounded-xl font-medium text-lg hover:bg-brand-800 transition shadow-xl shadow-brand-500/30 flex items-center justify-center gap-2">
+                    <a href="/Account/Register" class="bg-brand-700 text-white px-8 py-3.5 rounded-xl font-medium text-lg hover:bg-brand-800 transition shadow-xl shadow-brand-500/30 flex items-center justify-center gap-2">
                         Start Tracking Free
                         <i class="bi bi-arrow-right"></i>
                     </a>
@@ -117,51 +118,26 @@
                             <div class="h-8 w-8 bg-brand-100 text-brand-700 rounded-full flex items-center justify-center"><i class="bi bi-person-fill"></i></div>
                         </div>
                         <div class="space-y-4">
-                            <!-- Google -->
+                            @foreach(var job in Model.RecentJobs) {
+                                string typeColor = job.JobType == "Internship" ? "amber" : "green";
                             <div class="p-4 border border-gray-200 rounded-xl bg-white shadow-sm flex items-center justify-between">
                                 <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600 text-xl">
-                                    <i class="bi bi-google"></i>
+                                <div class="w-12 h-12 bg-gray-50 border border-gray-100 rounded-lg flex items-center justify-center text-gray-600 text-xl">
+                                    <i class="bi bi-briefcase"></i>
                                 </div>
                                 <div>
-                                    <div class="text-gray-900 font-semibold">Google</div>
-                                    <div class="text-sm text-gray-500">Software Engineer</div>
+                                    <div class="text-gray-900 font-semibold">@job.CompanyName</div>
+                                    <div class="text-sm text-gray-500">@job.Title</div>
                                 </div>
                                 </div>
-                                <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
-                                Offer Received
+                                <span class="px-3 py-1 bg-@(typeColor)-100 text-@(typeColor)-700 rounded-full text-xs font-semibold">
+                                @job.JobType
                                 </span>
                             </div>
-                            <!-- Microsoft -->
-                            <div class="p-4 border border-blue-200 rounded-xl bg-blue-50 shadow-sm flex items-center justify-between">
-                                <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-white border border-blue-200 rounded-lg flex items-center justify-center text-blue-600 text-xl">
-                                    <i class="bi bi-microsoft"></i>
-                                </div>
-                                <div>
-                                    <div class="text-blue-900 font-semibold">Microsoft</div>
-                                    <div class="text-sm text-blue-600">Product Manager</div>
-                                </div>
-                                </div>
-                                <span class="px-3 py-1 bg-blue-600 text-white rounded-full text-xs font-semibold">
-                                Interviewing
-                                </span>
-                            </div>
-                            <!-- Amazon -->
-                            <div class="p-4 border border-gray-200 rounded-xl bg-white shadow-sm flex items-center justify-between">
-                                <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600 text-xl">
-                                    <i class="bi bi-amazon"></i>
-                                </div>
-                                <div>
-                                    <div class="text-gray-900 font-semibold">Amazon</div>
-                                    <div class="text-sm text-gray-500">Sales Associate</div>
-                                </div>
-                                </div>
-                                <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-semibold">
-                                Screening
-                                </span>
-                            </div>
+                            }
+                            @if(!Model.RecentJobs.Any()) {
+                                <div class="text-center text-gray-400 py-4 italic">No jobs posted yet.</div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -173,7 +149,7 @@
                     </div>
                     <div>
                         <div class="text-xs text-gray-500 font-medium">Status Update</div>
-                        <div class="text-sm font-bold text-gray-900">Deep accepted the offer!</div>
+                        <div class="text-sm font-bold text-gray-900">@(Model.RecentApplicantName) accepted the offer!</div>
                     </div>
                 </div>
             </div>
@@ -278,20 +254,20 @@
             <h2 class="text-3xl font-bold mb-12">Empowering Institutions & Students Globally</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-cream-200">
-                    <div class="text-4xl font-extrabold text-brand-600 mb-2">10k+</div>
-                    <div class="text-gray-600 font-medium">Students Placed</div>
+                    <div class="text-4xl font-extrabold text-brand-600 mb-2">@(Model.TotalStudents)+</div>
+                    <div class="text-gray-600 font-medium">Students Registered</div>
                 </div>
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-cream-200">
-                    <div class="text-4xl font-extrabold text-brand-600 mb-2">500+</div>
+                    <div class="text-4xl font-extrabold text-brand-600 mb-2">@(Model.TotalPlaced)+</div>
+                    <div class="text-gray-600 font-medium">Successful Offers</div>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-cream-200">
+                    <div class="text-4xl font-extrabold text-gray-900 mb-2">@(Model.TotalCompanies)+</div>
                     <div class="text-gray-600 font-medium">Top Companies</div>
                 </div>
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-cream-200">
-                    <div class="text-4xl font-extrabold text-gray-900 mb-2">99%</div>
-                    <div class="text-gray-600 font-medium">Uptime Tracking</div>
-                </div>
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-cream-200">
-                    <div class="text-4xl font-extrabold text-gray-900 mb-2">24/7</div>
-                    <div class="text-gray-600 font-medium">System Support</div>
+                    <div class="text-4xl font-extrabold text-gray-900 mb-2">100%</div>
+                    <div class="text-gray-600 font-medium">Dynamic Setup</div>
                 </div>
             </div>
         </div>

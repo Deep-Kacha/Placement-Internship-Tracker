@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PlacementTracker.Models;
@@ -11,11 +12,18 @@ namespace PlacementTracker.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly Services.NotificationService _notificationService;
+        private readonly Services.IEmailSender _emailSender;
+        private readonly IWebHostEnvironment _env;
 
         public AccountController(UserManager<ApplicationUser> u,
             SignInManager<ApplicationUser> s, RoleManager<IdentityRole> r,
-            Services.NotificationService n)
-        { _userManager = u; _signInManager = s; _roleManager = r; _notificationService = n; }
+            Services.NotificationService n, Services.IEmailSender e,
+            IWebHostEnvironment env)
+        { 
+            _userManager = u; _signInManager = s; 
+            _roleManager = r; _notificationService = n; 
+            _emailSender = e; _env = env;
+        }
 
         [HttpGet] public IActionResult Login() => View();
 
@@ -90,7 +98,23 @@ namespace PlacementTracker.Controllers
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var resetLink = Url.Action("ResetPassword", "Account",
                     new { token, email = model.Email }, Request.Scheme);
-                TempData["ResetLink"] = resetLink;
+                
+                string mailBody = $@"
+                    <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; border-radius: 10px; overflow: hidden;'>
+                        <div style='background: #dc2626; padding: 20px; text-align: center;'>
+                            <h2 style='color: white; margin: 0;'>Trackeoo Password Reset</h2>
+                        </div>
+                        <div style='padding: 20px; color: #333;'>
+                            <p>Hello,</p>
+                            <p>We received a request to reset the password for your Trackeoo account. Click the button below to set a new password:</p>
+                            <div style='text-align: center; margin: 30px 0;'>
+                                <a href='{resetLink}' style='background: #dc2626; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Reset Password</a>
+                            </div>
+                            <p style='font-size: 13px; color: #666;'>If you didn't request a password reset, you can safely ignore this email.</p>
+                        </div>
+                    </div>";
+
+                await _emailSender.SendEmailAsync(model.Email, "Reset Your Trackeoo Password", mailBody);
             }
 
             // Always redirect to confirmation (don't reveal whether email exists)
@@ -155,7 +179,8 @@ namespace PlacementTracker.Controllers
                 CurrentAddress = user.CurrentAddress,
                 City = user.City,
                 State = user.State,
-                Pincode = user.Pincode
+                Pincode = user.Pincode,
+                CurrentResumePath = user.ResumePath
             };
             return View(model);
         }
@@ -185,6 +210,30 @@ namespace PlacementTracker.Controllers
             user.State = model.State;
             user.Pincode = model.Pincode;
 
+            if (model.ResumeUpload != null && model.ResumeUpload.Length > 0)
+            {
+                var allowedExtensions = new[] { ".pdf" };
+                var extension = Path.GetExtension(model.ResumeUpload.FileName).ToLower();
+                if (allowedExtensions.Contains(extension) && model.ResumeUpload.Length <= 5 * 1024 * 1024)
+                {
+                    string uploadsFolder = Path.Combine(_env.WebRootPath, "uploads", "resumes");
+                    Directory.CreateDirectory(uploadsFolder);
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ResumeUpload.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.ResumeUpload.CopyToAsync(fileStream);
+                    }
+                    user.ResumePath = "/uploads/resumes/" + uniqueFileName;
+                }
+                else
+                {
+                    ModelState.AddModelError("ResumeUpload", "Invalid file type or size (>5MB). Only PDF files are allowed.");
+                    model.CurrentResumePath = user.ResumePath;
+                    return View(model);
+                }
+            }
+
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
             {
@@ -193,7 +242,28 @@ namespace PlacementTracker.Controllers
             }
 
             foreach (var e in result.Errors) ModelState.AddModelError("", e.Description);
+            model.CurrentResumePath = user.ResumePath;
             return View(model);
+        }
+
+        [Authorize(Roles = "Admin,SuperAdmin,Faculty")]
+        public async Task<IActionResult> DownloadResume(string id)
+        {
+            var student = await _userManager.FindByIdAsync(id);
+            if (student == null || string.IsNullOrEmpty(student.ResumePath))
+                return NotFound("Resume not found for this user.");
+            
+            var path = Path.Combine(_env.WebRootPath, student.ResumePath.TrimStart('/'));
+            if (!System.IO.File.Exists(path))
+                return NotFound("Resume file is missing from server.");
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            return File(memory, "application/octet-stream", student.FullName + "_Resume" + Path.GetExtension(path));
         }
 
         [HttpGet]

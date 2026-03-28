@@ -58,3 +58,4 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\uploads\resumes\42bd0861-2eca-42e9-b3c2-361165c28eff_Deep-Kacha.pdf
