@@ -287,10 +287,17 @@ namespace PlacementTracker.Controllers
                     .Where(a => a.JobDescriptionId == jdId && studentIds.Contains(a.StudentId))
                     .ToListAsync();
 
-                // Placement Rule: If Selected, lock this student from others if needed (logic can be added here)
+                // Placement Rule: If Selected, lock this student from applying to new opportunities
                 foreach(var a in apps) {
                     a.Status = newStatus;
-                    await _notificationSvc.SendAsync(a.StudentId, $"Update: Your application status for {jd.CompanyName} - {jd.Title} has been changed to {newStatus}.", $"/Applications/Details/{a.Id}");
+                    if (newStatus == "Selected")
+                    {
+                        await _notificationSvc.SendAsync(a.StudentId, $"🎉 Congratulations! You have been Selected for {jd.CompanyName} - {jd.Title}. Your application portal is now locked.", $"/Applications/Details/{a.Id}");
+                    }
+                    else
+                    {
+                        await _notificationSvc.SendAsync(a.StudentId, $"Update: Your application status for {jd.CompanyName} - {jd.Title} has been changed to {newStatus}.", $"/Applications/Details/{a.Id}");
+                    }
                 }
             }
 

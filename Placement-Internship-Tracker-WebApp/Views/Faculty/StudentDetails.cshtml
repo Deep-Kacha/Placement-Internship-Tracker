@@ -3,11 +3,21 @@
     var student = ViewBag.Student as ApplicationUser;
     var placements = ViewBag.Placements as List<JobApplication> ?? new();
     var internships = ViewBag.Internships as List<InternshipApplication> ?? new();
+    bool isPlaced = placements.Any(a => a.Status == "Selected");
+    string? placedAt = placements.FirstOrDefault(a => a.Status == "Selected")?.CompanyName;
 }
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <div><h5 class="fw-bold mb-0">@student?.FullName</h5>
+    <div><h5 class="fw-bold mb-0">@student?.FullName
+        @if (isPlaced) { <span class="badge bg-success ms-2 fs-6"><i class="bi bi-shield-lock-fill me-1"></i>Placed at @placedAt</span> }
+    </h5>
         <small class="text-muted">@student?.Department · @student?.CollegeRollNo</small></div>
-    <a asp-action="Index" class="btn btn-sm btn-outline-secondary">← Back</a>
+    <div class="d-flex gap-2">
+        @if (!string.IsNullOrEmpty(student?.ResumePath))
+        {
+            <a asp-controller="Account" asp-action="DownloadResume" asp-route-id="@student.Id" class="btn btn-sm btn-outline-primary"><i class="bi bi-file-earmark-pdf me-1"></i>Resume</a>
+        }
+        <a asp-action="Index" class="btn btn-sm btn-outline-secondary">← Back</a>
+    </div>
 </div>
 
 <!-- Placements -->

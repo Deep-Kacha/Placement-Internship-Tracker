@@ -32,6 +32,13 @@ namespace PlacementTracker.Controllers
             var appliedInternIds = await _db.InternshipApplications.Where(a => a.StudentId == user.Id && a.JobDescriptionId != null).Select(a => a.JobDescriptionId).ToListAsync();
             
             ViewBag.AppliedJobIds = new HashSet<int?>(appliedJobIds.Concat(appliedInternIds));
+
+            // Placement Lock: check if student has any placement with "Selected" status
+            var selectedPlacement = await _db.JobApplications
+                .FirstOrDefaultAsync(a => a.StudentId == user.Id && a.Status == "Selected" && a.IsActive);
+            ViewBag.IsPlacementLocked = selectedPlacement != null;
+            ViewBag.SelectedCompany = selectedPlacement?.CompanyName;
+
             return View(jds);
         }
 
@@ -48,6 +55,13 @@ namespace PlacementTracker.Controllers
             else applied = await _db.JobApplications.AnyAsync(a => a.StudentId == user.Id && a.JobDescriptionId == id);
 
             ViewBag.HasApplied = applied;
+
+            // Placement Lock
+            var selectedPlacement = await _db.JobApplications
+                .FirstOrDefaultAsync(a => a.StudentId == user.Id && a.Status == "Selected" && a.IsActive);
+            ViewBag.IsPlacementLocked = selectedPlacement != null;
+            ViewBag.SelectedCompany = selectedPlacement?.CompanyName;
+
             return View(jd);
         }
 
@@ -58,6 +72,21 @@ namespace PlacementTracker.Controllers
             if(jd == null || jd.Status != "Approved") return NotFound();
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return Unauthorized();
+
+            // Placement Lock: prevent applying if already selected
+            var isLocked = await _db.JobApplications
+                .AnyAsync(a => a.StudentId == user.Id && a.Status == "Selected" && a.IsActive);
+            if (isLocked)
+            {
+                TempData["Error"] = "You are already placed! Your application portal is locked.";
+                return RedirectToAction(nameof(Details), new { id });
+            }
+
+            if (DateTime.Today > jd.Deadline)
+            {
+                TempData["Error"] = "The deadline for this opportunity has passed.";
+                return RedirectToAction(nameof(Details), new { id });
+            }
 
             if(jd.JobType == "Internship") {
                 if(await _db.InternshipApplications.AnyAsync(a => a.StudentId == user.Id && a.JobDescriptionId == id)) {

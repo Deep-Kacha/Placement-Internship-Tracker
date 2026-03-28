@@ -15,7 +15,7 @@ namespace PlacementTracker.ViewModels
         public string? Package { get; set; }
 
         public static List<string> StatusList => new() {
-            "Applied", "Screening", "Interview", "Offer", "Rejected", "Withdrawn"
+            "Applied", "Screening", "Interview", "Offer", "Selected", "Rejected", "Withdrawn"
         };
     }
 }

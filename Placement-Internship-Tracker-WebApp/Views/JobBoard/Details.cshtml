@@ -1,11 +1,25 @@
 @model PlacementTracker.Models.JobDescription
 @{ ViewData["Title"] = "Job Details"; 
    bool hasApplied = ViewBag.HasApplied ?? false;
+   bool isLocked = ViewBag.IsPlacementLocked ?? false;
+   string? selectedCompany = ViewBag.SelectedCompany;
 }
 
 <div class="mb-4">
     <a asp-action="Index" class="text-decoration-none text-muted small"><i class="bi bi-arrow-left me-1"></i>Back to Board</a>
 </div>
+
+@if (isLocked) {
+<div class="alert border-0 shadow-sm mb-4 p-3" style="background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);">
+    <div class="d-flex align-items-center">
+        <i class="bi bi-shield-lock-fill text-success fs-4 me-3"></i>
+        <div>
+            <strong class="text-success">Placement Locked</strong>
+            <span class="text-dark ms-1">— You are placed at <strong>@selectedCompany</strong>. Applications are disabled.</span>
+        </div>
+    </div>
+</div>
+}
 
 <div class="row justify-content-center">
     <div class="col-lg-8">
@@ -86,7 +100,11 @@
                 }
 
                 <div class="mt-5 p-4 bg-secondary bg-opacity-10 rounded-3 text-center">
-                    @if (hasApplied) {
+                    @if (isLocked) {
+                        <h5 class="fw-bold text-secondary mb-2"><i class="bi bi-lock-fill me-2"></i>Application Portal Locked</h5>
+                        <p class="text-muted mb-0">You are placed at <strong>@selectedCompany</strong>. You cannot apply to new opportunities.</p>
+                    }
+                    else if (hasApplied) {
                         <h5 class="fw-bold text-success mb-2"><i class="bi bi-check-circle-fill me-2"></i>Application Submitted</h5>
                         <p class="text-muted mb-0">You have already applied for this role. Track its status in your dashboard.</p>
                     }
