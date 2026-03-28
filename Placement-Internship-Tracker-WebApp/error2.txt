@@ -1,0 +1,13 @@
+﻿  Determining projects to restore...
+  All projects are up-to-date for restore.
+D:\Placement-Internship-Tracker\Placement-Internship-Tracker-WebApp\Controllers\AccountController.cs(248,10): error CS0246: The type or namespace name 'AuthorizeAttribute' could not be found (are you missing a using directive or an assembly reference?) [D:\Placement-Internship-Tracker\Placement-Internship-Tracker-WebApp\Placement-Internship-Tracker-WebApp.csproj]
+D:\Placement-Internship-Tracker\Placement-Internship-Tracker-WebApp\Controllers\AccountController.cs(248,10): error CS0246: The type or namespace name 'Authorize' could not be found (are you missing a using directive or an assembly reference?) [D:\Placement-Internship-Tracker\Placement-Internship-Tracker-WebApp\Placement-Internship-Tracker-WebApp.csproj]
+
+Build FAILED.
+
+D:\Placement-Internship-Tracker\Placement-Internship-Tracker-WebApp\Controllers\AccountController.cs(248,10): error CS0246: The type or namespace name 'AuthorizeAttribute' could not be found (are you missing a using directive or an assembly reference?) [D:\Placement-Internship-Tracker\Placement-Internship-Tracker-WebApp\Placement-Internship-Tracker-WebApp.csproj]
+D:\Placement-Internship-Tracker\Placement-Internship-Tracker-WebApp\Controllers\AccountController.cs(248,10): error CS0246: The type or namespace name 'Authorize' could not be found (are you missing a using directive or an assembly reference?) [D:\Placement-Internship-Tracker\Placement-Internship-Tracker-WebApp\Placement-Internship-Tracker-WebApp.csproj]
+    0 Warning(s)
+    2 Error(s)
+
+Time Elapsed 00:00:01.79
