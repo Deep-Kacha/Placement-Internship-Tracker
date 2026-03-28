@@ -32,6 +32,9 @@ namespace PlacementTracker.Models
         public string? State { get; set; }
         public string? Pincode { get; set; }
 
+        // Documents
+        public string? ResumePath { get; set; }
+
         // Navigation
         public ICollection<JobApplication> Applications { get; set; } = new List<JobApplication>();
         public ICollection<InternshipApplication> Internships { get; set; } = new List<InternshipApplication>();

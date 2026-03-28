@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PlacementTracker.Data;
 using PlacementTracker.Models;
 using PlacementTracker.ViewModels;
@@ -11,16 +13,33 @@ namespace PlacementTracker.Controllers
     {
         private readonly AppDbContext _db;
         private readonly IWebHostEnvironment _env;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public HomeController(AppDbContext db, IWebHostEnvironment env)
+        public HomeController(AppDbContext db, IWebHostEnvironment env, UserManager<ApplicationUser> userManager)
         {
             _db = db;
             _env = env;
+            _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var students = await _userManager.GetUsersInRoleAsync("Student");
+            var placedCount = await _db.JobApplications.CountAsync(a => a.Status == "Offer") + await _db.InternshipApplications.CountAsync(a => a.Status == "Completed");
+            var compCount = await _db.Companies.CountAsync();
+            var recentJobs = await _db.JobDescriptions.Where(j => j.IsActive && j.Status == "Approved").OrderByDescending(j => j.CreatedAt).Take(3).ToListAsync();
+            var lastApp = await _db.JobApplications.Include(a => a.Student).OrderByDescending(a => a.AppliedDate).FirstOrDefaultAsync();
+
+            var vm = new LandingPageViewModel
+            {
+                TotalStudents = students.Count,
+                TotalPlaced = placedCount,
+                TotalCompanies = compCount,
+                RecentJobs = recentJobs,
+                RecentApplicantName = lastApp?.Student?.FullName?.Split(' ')[0] ?? "A student"
+            };
+
+            return View(vm);
         }
 
         [HttpGet]

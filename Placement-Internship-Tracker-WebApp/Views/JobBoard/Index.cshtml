@@ -1,6 +1,24 @@
 @model IEnumerable<PlacementTracker.Models.JobDescription>
 @{ ViewData["Title"] = "Discover Jobs"; 
    var appliedList = ViewBag.AppliedJobIds as HashSet<int?> ?? new HashSet<int?>();
+   bool isLocked = ViewBag.IsPlacementLocked ?? false;
+   string? selectedCompany = ViewBag.SelectedCompany;
+}
+
+@if (isLocked) {
+<div class="alert border-0 shadow-sm mb-4 p-4" style="background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);">
+    <div class="d-flex align-items-center">
+        <div class="me-3">
+            <div class="bg-success bg-opacity-25 rounded-circle p-3 d-inline-flex">
+                <i class="bi bi-shield-lock-fill text-success fs-3"></i>
+            </div>
+        </div>
+        <div>
+            <h5 class="fw-bold text-success mb-1">🎉 Congratulations! You've Been Placed!</h5>
+            <p class="mb-0 text-dark">You have been <strong>selected</strong> at <strong>@selectedCompany</strong>. Your application portal is now <strong>locked</strong> — you cannot apply to new opportunities.</p>
+        </div>
+    </div>
+</div>
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -43,9 +61,24 @@
                         </div>
                     </div>
                     
-                    <a asp-action="Details" asp-route-id="@jd.Id" class="btn w-100 fw-semibold @(isApplied ? "btn-light border text-success disabled" : "btn-primary")">
-                        @(isApplied ? "Applied ✓" : "View Details & Apply")
-                    </a>
+                    @{ bool isClosed = DateTime.Today > jd.Deadline; }
+                    @if (isLocked) {
+                        <a asp-action="Details" asp-route-id="@jd.Id" class="btn w-100 fw-semibold btn-light border text-secondary disabled">
+                            <i class="bi bi-lock-fill me-1"></i>Locked
+                        </a>
+                    } else if (isApplied) {
+                        <a asp-action="Details" asp-route-id="@jd.Id" class="btn w-100 fw-semibold btn-light border text-success disabled">
+                            Applied ✓
+                        </a>
+                    } else if (isClosed) {
+                        <a asp-action="Details" asp-route-id="@jd.Id" class="btn w-100 fw-semibold btn-light border text-danger">
+                            Closed (View Details)
+                        </a>
+                    } else {
+                        <a asp-action="Details" asp-route-id="@jd.Id" class="btn w-100 fw-semibold btn-primary">
+                            View Details & Apply
+                        </a>
+                    }
                 </div>
             </div>
         </div>

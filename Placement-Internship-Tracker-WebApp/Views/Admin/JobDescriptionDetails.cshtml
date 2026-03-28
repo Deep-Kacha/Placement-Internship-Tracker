@@ -122,6 +122,7 @@
                         <option value="Shortlisted">Shortlisted</option>
                         <option value="Interview">Interview</option>
                         <option value="Offer">Offer</option>
+                        <option value="Selected">Selected ✓</option>
                         <option value="Rejected">Rejected</option>
                     </select>
                 </div>
@@ -139,6 +140,7 @@
                             <th>Roll No</th>
                             <th>Department</th>
                             <th>Current Status</th>
+                            <th>Resume</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -148,7 +150,7 @@
                                 : Model.JobApplications.Select(a => new { a.Student, a.Status }).ToList();
                         }
                         @if(!applicants.Any()) {
-                            <tr><td colspan="5" class="text-center py-5 text-muted">No applicants yet.</td></tr>
+                            <tr><td colspan="6" class="text-center py-5 text-muted">No applicants yet.</td></tr>
                         }
                         @foreach (var app in applicants) {
                             <tr>
@@ -157,6 +159,18 @@
                                 <td><code>@app.Student?.CollegeRollNo</code></td>
                                 <td>@app.Student?.Department</td>
                                 <td><span class="badge bg-light text-dark border">@app.Status</span></td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(app.Student?.ResumePath))
+                                    {
+                                        <a asp-controller="Account" asp-action="DownloadResume" asp-route-id="@app.Student.Id" class="btn btn-sm btn-outline-primary" title="Download Resume">
+                                            <i class="bi bi-file-earmark-pdf"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted small">—</span>
+                                    }
+                                </td>
                             </tr>
                         }
                     </tbody>

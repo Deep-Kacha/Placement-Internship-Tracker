@@ -38,6 +38,7 @@ builder.Services.AddScoped<ApplicationService>();
 builder.Services.AddScoped<InternshipService>();
 builder.Services.AddScoped<AnalyticsService>();
 builder.Services.AddScoped<NotificationService>();
+builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
 
 // ─── MVC ───
 builder.Services.AddControllersWithViews();

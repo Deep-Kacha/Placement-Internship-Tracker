@@ -249,6 +249,9 @@ namespace PlacementTracker.Migrations
                     b.Property<string>("Pincode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ResumePath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
