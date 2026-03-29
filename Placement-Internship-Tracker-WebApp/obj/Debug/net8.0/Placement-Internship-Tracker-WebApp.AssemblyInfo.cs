@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Placement-Internship-Tracker-WebApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+55dfcddea68ee174aab1ef0cdb08ecd22f6b0493")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+36cf649139d4916553257d310c373f9ab637bb2d")]
 [assembly: System.Reflection.AssemblyProductAttribute("Placement-Internship-Tracker-WebApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Placement-Internship-Tracker-WebApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
