@@ -28,7 +28,7 @@ namespace PlacementTracker.ViewModels
         public string? Bond { get; set; }
         public string? SelectionProcess { get; set; }
 
-        public string? CompanyWebsite { get; set; }
+        public string? CompanyWebsite { get; set; } 
         public string? ContactName { get; set; }
         public string? ContactEmail { get; set; }
         public string? ContactMobile { get; set; }
