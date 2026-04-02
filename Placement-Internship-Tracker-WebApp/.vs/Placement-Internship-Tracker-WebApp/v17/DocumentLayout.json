@@ -3,8 +3,16 @@
   "WorkspaceRootPath": "D:\\Placement-Internship-Tracker\\Placement-Internship-Tracker-WebApp\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{F4A1C5A8-0866-4E2C-A4B5-826F37CE3D53}|Placement-Internship-Tracker-WebApp.csproj|d:\\placement-internship-tracker\\placement-internship-tracker-webapp\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{F4A1C5A8-0866-4E2C-A4B5-826F37CE3D53}|Placement-Internship-Tracker-WebApp.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F4A1C5A8-0866-4E2C-A4B5-826F37CE3D53}|Placement-Internship-Tracker-WebApp.csproj|d:\\placement-internship-tracker\\placement-internship-tracker-webapp\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{F4A1C5A8-0866-4E2C-A4B5-826F37CE3D53}|Placement-Internship-Tracker-WebApp.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F4A1C5A8-0866-4E2C-A4B5-826F37CE3D53}|Placement-Internship-Tracker-WebApp.csproj|d:\\placement-internship-tracker\\placement-internship-tracker-webapp\\viewmodels\\jobdescriptionviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F4A1C5A8-0866-4E2C-A4B5-826F37CE3D53}|Placement-Internship-Tracker-WebApp.csproj|solutionrelative:viewmodels\\jobdescriptionviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -31,12 +39,37 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\Placement-Internship-Tracker\\Placement-Internship-Tracker-WebApp\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "D:\\Placement-Internship-Tracker\\Placement-Internship-Tracker-WebApp\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-04-02T15:22:43.459Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "JobDescriptionViewModel.cs",
+              "DocumentMoniker": "D:\\Placement-Internship-Tracker\\Placement-Internship-Tracker-WebApp\\ViewModels\\JobDescriptionViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\JobDescriptionViewModel.cs",
+              "ToolTip": "D:\\Placement-Internship-Tracker\\Placement-Internship-Tracker-WebApp\\ViewModels\\JobDescriptionViewModel.cs",
+              "RelativeToolTip": "ViewModels\\JobDescriptionViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-30T04:33:40.344Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\Placement-Internship-Tracker\\Placement-Internship-Tracker-WebApp\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
               "ToolTip": "D:\\Placement-Internship-Tracker\\Placement-Internship-Tracker-WebApp\\Views\\Home\\Index.cshtml",
               "RelativeToolTip": "Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAgAAAAAAAAAA==",
+              "ViewState": "AgIAAIoAAAAAAAAAAAAAAI0AAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-03-27T05:12:57.283Z",
               "EditorCaption": ""
