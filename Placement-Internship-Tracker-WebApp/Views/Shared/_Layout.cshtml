@@ -149,7 +149,8 @@
 
         /* Sidebar Styling */
         .sidebar {
-            width: var(--sidebar-w); min-height: 100vh; position: fixed;
+            width: var(--sidebar-w); height: 100vh; position: fixed;
+            top: 0; left: 0;
             background: var(--sidebar-bg); padding: 0; z-index: 1000;
             border-right: 1px solid var(--border-color);
             transition: all .3s; display: flex; flex-direction: column;
@@ -157,7 +158,11 @@
         .sidebar-brand { padding: 1.5rem; border-bottom: 1px solid var(--border-color); }
         .sidebar-brand h5 { color: var(--primary); margin: 0; font-weight: 800; font-size: 1.25rem; letter-spacing: 0.5px; }
         .sidebar-brand small { color: var(--text-light); font-size: .75rem; letter-spacing: 1px; font-weight: 700;}
-        .sidebar-content { flex: 1; overflow-y: auto; padding-bottom: 1rem; }
+        .sidebar-content { flex: 1; overflow-y: auto; padding-bottom: 1rem; scrollbar-width: thin; scrollbar-color: var(--border-color) transparent; }
+        .sidebar-content::-webkit-scrollbar { width: 5px; }
+        .sidebar-content::-webkit-scrollbar-track { background: transparent; }
+        .sidebar-content::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        .sidebar-content::-webkit-scrollbar-thumb:hover { background: var(--text-light); }
         .nav-section {
             padding: 1.25rem 1.5rem .5rem; 
             color: var(--text-light); font-size: .75rem;
@@ -320,11 +325,11 @@
             </a>
             <div class="nav-section">Management</div>
             <a asp-controller="Admin" asp-action="Users" 
-               class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString()=="Admin"&&ViewContext.RouteData.Values["action"]?.ToString()=="Users"?"active":"")" aria-label="Manage Users">
+               class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString()=="Admin"&&(ViewContext.RouteData.Values["action"]?.ToString()=="Users"||ViewContext.RouteData.Values["action"]?.ToString()=="CreateStudent"||ViewContext.RouteData.Values["action"]?.ToString()=="CreateFaculty")?"active":"")" aria-label="Manage Users">
                 <i class="bi bi-person-lines-fill"></i> Users
             </a>
             <a asp-controller="Admin" asp-action="JobDescriptions"
-               class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString()=="Admin"&&ViewContext.RouteData.Values["action"]?.ToString()=="JobDescriptions"?"active":"")" aria-label="Job Postings">
+               class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString()=="Admin"&&(ViewContext.RouteData.Values["action"]?.ToString()=="JobDescriptions"||ViewContext.RouteData.Values["action"]?.ToString()=="JobDescriptionDetails")?"active":"")" aria-label="Job Postings">
                 <i class="bi bi-briefcase-fill"></i> Job Postings
             </a>
             <a asp-controller="Admin" asp-action="Applications" 
